@@ -32,9 +32,23 @@
 **** 与JMS一同发送和接收异步消息
 **** 利用Lingo与JMS上提供和使用异步远程服务
 *** EJB
+**** 编写和启用spring的ejb
+**** 把ejb引用装配进spring的上下文
+**** 利用ejb注释来配置spring bean
 *** 定制工作计划 发送电子邮件 访问JNDI配置的资源 JMX管理应用程序对象
 ** spring构建web应用程序的方式
 *** mvc框架
+**** 透明地把web参数绑定到业务对象
+**** 提供数据校验和错误处理功能
+**** 利用spring拦截器来向web应用程序添加功能
 *** Mvc视图层
+**** 把一个springmvc控制器的输出映射到某个特定的视图组件
+**** 利用jsp velocity freemaker titles定义应用程序视图
+**** 从spring mvc生成非html输出
 *** webFlow
+**** 构建web应用程序完成特定的流程
 *** 与其他框架的集成
+**** struts
+**** webwork
+**** tapestry
+**** jsf
