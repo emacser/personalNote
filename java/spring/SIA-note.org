@@ -1,0 +1,54 @@
+* Spring In Action
+** spring核心特性 DI AOP
+*** DI 和 AOP
+**** 如何开发松散耦合的java应用程序
+*** 如何利用DI和AOP来配置和关联应用程序对象
+**** 如何编写松散耦合的组件
+**** 在spring容器中利用xml来装配他们的依赖性和属性
+*** 高级特性
+**** 应用程序组件生命周期内的装配
+**** 配置父子关系
+**** 如何装配进脚本化组件
+*** AOP耦合横切面
+**** 利用AOP实现声明式服务（事务 安全 高速缓存）
+** DI和AOP在数据层和业务层中的使用
+*** 数据持久层支持
+**** 对jdbc的支持
+**** 与Hibernate的集成
+**** 与Ibatis的集成
+**** 与jpa的集成
+*** 事务管理
+**** 如何利用AOP把声明式事务管理功能提供给简单的应用程序对象
+*** Spring Security
+**** 如何利用Servlet过滤器在web请求层面和利用AOP在方法层面保护应用程序
+*** 远程服务
+**** RMI Hessian/Burlap
+**** 基于soap的web服务
+**** HttpInvoker
+*** Spring-WS
+**** 构建契约优先 的web服务
+**** 如何将服务的契约从实现中去耦
+*** JSM
+**** 与JMS一同发送和接收异步消息
+**** 利用Lingo与JMS上提供和使用异步远程服务
+*** EJB
+**** 编写和启用spring的ejb
+**** 把ejb引用装配进spring的上下文
+**** 利用ejb注释来配置spring bean
+*** 定制工作计划 发送电子邮件 访问JNDI配置的资源 JMX管理应用程序对象
+** spring构建web应用程序的方式
+*** mvc框架
+**** 透明地把web参数绑定到业务对象
+**** 提供数据校验和错误处理功能
+**** 利用spring拦截器来向web应用程序添加功能
+*** Mvc视图层
+**** 把一个springmvc控制器的输出映射到某个特定的视图组件
+**** 利用jsp velocity freemaker titles定义应用程序视图
+**** 从spring mvc生成非html输出
+*** webFlow
+**** 构建web应用程序完成特定的流程
+*** 与其他框架的集成
+**** struts
+**** webwork
+**** tapestry
+**** jsf
