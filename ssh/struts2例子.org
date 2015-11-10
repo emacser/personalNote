@@ -1,0 +1,306 @@
+* 配置
+** 引入struts2
+ - web.xml配置
+ - 例子
+#+BEGIN_SRC xml
+   <filter>
+	<filter-name>struts2</filter-name>
+	<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+  </filter>
+  
+  <filter-mapping>
+	<filter-name>struts2</filter-name>
+	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+#+END_SRC
+
+** action配置
+*** xml配置
+ - 在struts.xml中配置
+ - 例子
+ #+BEGIN_SRC xml
+ <package name="user" namespace="/User" extends="struts-default">
+		<action name="Login">
+			<result>pages/login.jsp</result>
+		</action>
+		<action name="Welcome" class="com.mkyong.user.action.WelcomeUserAction">
+			<result name="SUCCESS">pages/welcome_user.jsp</result>
+		</action>
+	</package>
+#+END_SRC
+ - name 
+   包的名称
+ - namespace
+   命名空间
+ - extends
+   继承的包
+ - action
+   actionde 配置
+*** 注解配置
+**** 配置位置
+  - 配置在Action类中
+  - 例子
+#+BEGIN_SRC java
+@Namespace("/User")
+@ResultPath(value="/")
+@Result(name="success",location="pages/login.jsp")
+public class LoginAction ....
+#+END_SRC
+**** ResultPath
+ - 配置该action对应物理视图资源的路径
+ - struts2会到 项目上下文/pages/login.jsp找试图文件
+***** 默认
+ - 项目上下文/WEB-INF/content/命名空间/action中location值
+ - 例子
+      /Struts2Example/WEB-INF/content/User/pages/login.jsp
+***** 自定义
+ - 项目上下文/WEB-INF/ResultPath的值/命名空间/action中location值
+ - 例子
+      /Struts2Example/User/pages/login.jsp
+***** 全局
+ - 配置在Struts.xml中
+ - 例子
+#+BEGIN_SRC xml
+  <struts>
+    <constant name="struts.convention.result.path" value="/"/>
+</struts>
+#+END_SRC   
+*** 多文件
+ - 例子
+#+BEGIN_SRC xml
+  <include file="user/struts-user.xml"></include>
+    <include file="audit/struts-audit.xml"></include>
+#+END_SRC
+
+*** 命令空间配置
+ - 包名 name不会对实际结果造成影响
+ - 命名空间会影响action的调用url
+*** 映射
+ - 访问url: 项目的上下文/命名空间/类名称.action
+*** 开发模式
+ - struts配置
+#+BEGIN_SRC xml
+  <constant name="struts.devMode" value="true" />
+#+END_SRC
+
+*** 去掉action后缀
+**** struts配置
+ - struts.action.extendsion的值设置为""
+ - 例子
+#+BEGIN_SRC xml
+   <constant name="struts.action.extension" value=""/> 
+#+END_SRC
+
+** action的使用
+*** 属性文件
+**** 位置
+ - action同目录
+**** 名称
+ - ***action.properties
+**** 全局
+ - global.properties
+*** action
+  1) 继承ActionSupport类
+  2) addActionMessge("消息");
+  3) addActionError(""消息);
+ *** jsp页面
+ - <s:actionerror/>
+ - <s:actionmessage/>
+
+*** modelDriven接口
+ - 实体类
+  + 属性实现setter/getter方法
+ - action实现ModelDriven
+  + 实例化该实体类
+ - 功能
+  + 页面直接提交该提示类的属性值
+  + action自动设置实体类的属性值
+** 拦截器
+*** 默认设置
+ - 如果action继承了struts-default,则自动继承了默认的拦截器设置
+ - 拦截器的默认设置在struts-default.xml文件中被组织为defaultStack
+ - 它位于struts2-core.jar文件中
+*** 自定义拦截器
+**** 拦截器类
+ - 实现com.opensymphony.xwork2.interceptor.Interceptor接口
+ - 实现intercept(ActionInvocation invocation)方法
+ - 必须调用invocation.invoke()方法并返回其结果
+**** struts配置
+ - interceptor-ref属性
+ - 拦截器栈会按照配置的顺序依次加载
+ - 多个拦截器可以写成一个拦截器栈
+ - 例子
+#+BEGIN_SRC xml
+<interceptors>  
+            <!-- 配置mySimpleInterceptor拦截器 -->  
+            <interceptor name="mySimpleInterceptor" class="com.lee.action.SimpleInterceptor">  
+                <!-- 为方法过滤拦截器指定name属性值 -->  
+                <param name="name">简单方法过滤拦截器</param>  
+            </interceptor>  
+            <!-- 配置第二个拦截器 -->  
+            <interceptor name="second" class="com.lee.action.SecondeInterceptor"></interceptor>  
+  
+            <!-- 配置名为my-stack的拦截器栈 -->  
+            <interceptor-stack name="my-stack">  
+                <!-- 配置拦截器栈内的第一个拦截器 -->  
+                <interceptor-ref name="mySimpleInterceptor">  
+                    <param name="name">第一个</param>  
+                </interceptor-ref>  
+                <!-- 配置拦截器栈内的第二个拦截器 -->  
+                <interceptor-ref name="second">  
+                    <param name="name">第二个</param>  
+                </interceptor-ref>  
+            </interceptor-stack>  
+        </interceptors>  
+
+<action name="testingAction" class="com.xuejava.common.action.TestingAction" >
+      <interceptor-ref name="mySimpleInterceptor"/>
+      <interceptor-ref name="logger"/>
+      <interceptor-ref name="second"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="success">pages/result.jsp</result>
+  </action>  
+#+END_SRC
+
+**** 拦截器参数
+ - 参数名称带上拦截器名称
+ - 例子
+#+BEGIN_SRC xml
+  <interceptor-ref name="defaultStack">
+　　<param name="workflow.excludeMethods">whateverMethod</param>
+ </interceptor-ref>
+#+END_SRC
+
+**** 重用多个拦截器栈
+ - 例子
+#+BEGIN_SRC xml
+  <interceptors>
+　　<interceptor-stack name="defaultStackWithLog">
+　　<interceptor-ref name="timer"/>
+　　<interceptor-ref name="logger"/>
+　　<interceptor-ref name="defaultStack" />
+　　</interceptor-stack>
+　</interceptors>
+ # 在需要拦截器的action中导入该拦截器包
+#+END_SRC
+
+**** execAndWait拦截器
+***** action
+ - 继承自ActionSupport
+***** jsp
+ - 定义载入中需要展示的页面
+***** struts.xml
+ - 例子
+#+BEGIN_SRC xml
+  <interceptor-ref name="execAndWait">
+　　　　　　<param name="delay">1000</param>
+　　　　　　<param name="delaySleepInterval">500</param>
+　　　　</interceptor-ref>
+　　　　<result name="wait">pages/wait.jsp</result>
+　　　　<result name="success">pages/success.jsp</result>
+#+END_SRC
+** 资源包和本地化
+*** 资源包
+**** 查找顺序
+ - ActionClass.properties
+ - Interceptor.properties
+ - BaseClass.properties
+ - ModelDriven的model
+ - Package.properties 
+ - 在i18消息层级本身查找
+ - 全局资源属性
+**** 使用
+***** action使用
+ - 继承 ActionSupport
+ - getText("自文件名称")
+ - 例子
+#+BEGIN_SRC java
+  public class LoginAction extends ActionSupport{
+  ...
+   public void validate(){
+     addFieldError("userName",getText("userName.required"));
+   }
+  ...
+  }
+#+END_SRC
+
+***** 属性标签
+ - 在<s:property>标签中使用getText("属性文件名称")
+  + 例子
+#+BEGIN_SRC html
+ <s:property value="getText("userName")"/>
+#+END_SRC
+ - <s:text>标签
+  + 例子
+#+BEGIN_SRC html
+ <s:text name="userName"/>
+#+END_SRC
+ - key属性
+  + 例子
+#+BEGIN_SRC html
+ <s:textfield key="username" /> 
+#+END_SRC
+ - i18n标签
+  + 例子
+#+BEGIN_SRC html
+ <s:i18n name="com.xuejava.user.package" >
+     　　 <s:text name="username" />
+</s:i18n> 
+#+END_SRC
+
+*** i18n与本地化
+**** 项目结构
+ - Action类下对应的属性文件命名
+ - 包对应的属性文件命名
+ - 例子 
+  + LoginAction_zh_CN.properties
+  + global_en.properties
+**** 属性文件
+ - 以国家指定的编码命名
+ - native2ascii工具或其他
+**** action
+ - getText()
+ - 例子
+ #+BEGIN_SRC java
+  //简单验证
+　　public void validate(){
+　　　　if("".equals(getUsername())){
+　　　　　　addFieldError("username", getText("username.required"));
+　　　　}
+　　　　if("".equals(getPassword())){
+　　　　　　addFieldError("password", getText("password.required"));
+　　　　}
+　　}
+#+END_SRC
+**** jsp视图
+ - 必须使用申明<%@page contentType=”text/html;charset=UTF-8”%>
+ - 要改变默认的地区，我们需要声明一个“request_locale”参数，设置首选语言编码并传递给Action类
+**** 显示资源包信息
+ - 例子
+#+BEGIN_SRC jsp
+<s:textfield key="global.username" name="username" />
+<s:text name="global.username" /> 
+<s:property value="getText('global.username')" />
+<s:text name="global.password" />
+#+END_SRC
+**** struts.xml配置
+ - 例子
+#+BEGIN_SRC xml
+  <constant name="struts.custom.i18n.resources" value="global" />
+#+END_SRC
+
+** struts2的动态方法调用
+*** action的配置
+#+BEGIN_SRC xml
+<action name="actionName_*" class="action的完整路径" method="{1}">  
+#+END_SRC
+*** jsp页面的调用
+#+BEGIN_SRC html
+  action="actionName_执行方法?参数名称=参数值&其他参数..."
+#+END_SRC
+** action属性参数的接收
+*** 一般属性
+ - setter/getter方法
+ - Url传递
+*** 域模型
+ - 

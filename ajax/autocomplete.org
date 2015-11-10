@@ -1,0 +1,70 @@
+* 服务器端处理流程
+** 转码
+ -  使用URLDecoder.decode(object,"utf-8")进行转码
+  1)  String word = URLDecoder.decode(对象名称.属性值,"UTF_8")
+** 获取数据
+ -  调用service层查询数据
+** 存session
+*** 将service层传递来的数据保存到session中
+** 转码
+*** 设置传回数据的编码
+ - response.setCharacterEncoding("UTF_8);
+** 输出
+ - 输出到流中
+  1) response.getWriter().write(字符串数据);
+ - 前台页面接收
+  1) 利用ajax的反馈方法,将session中的流获取后在页面展示
+  2) 示例
+ #+BEGIN_SRC javaScipt
+ function showloanTypeChildren(obj) {
+				ht.ajax(
+					function(value) { 
+                                                                          //此处的方法为反馈方法,可进行页面信息处理
+						var childloanType = ht.$('childloanType');
+						childloanType.innerHTML = value;
+					},
+                                                                         //ajax的提交
+					'${pageContext.request.contextPath }/control/consulation/ConsulationAction_findchildrenLoanType.action?projectView.loanTypeId='
+							+ obj.value + "&" + new Date());
+
+			}
+#+END_SRC
+* 中转页面
+** 取值
+*** 从request中取得从action中传递来的数据
+*** 转型为合适对象
+** 遍历
+*** 使用StringBuffer对象将其转化为一个用特定字符分割的字符串
+*** 去掉最后一个多余字符
+** 输出
+ - out.print(字符串)
+* 客户端代码
+** 设置提示框的样式
+*** 位置
+**** 获取输入框的offset
+**** 提示框的left值同offst
+**** 提示框的top在offset上加25
+*** 宽度
+**** width:200px
+*** 边界
+**** border 1px
+*** 背景等
+**** position absolute
+**** background ...
+*** 隐藏提示框
+**** hide()
+** 输入框动作
+*** 判断输入框的动作是否有效
+**** 获取键盘动作事件
+ - var myEvent = event||window.event;
+**** 驱动键盘动作代码
+ - var keyCode = myEvent.keyCode;
+**** 在指定的动作代码下进行ajax提交
+ - keyCode>=65 && keyCode<=90 && keyCode==8 && keyCode==48 && keyCode==13
+ - 65-90标识为字母字符
+ - 8 标识BackSpace
+ - 48 标识 braceright 
+ - 13 标识 Enter
+*** ajax提交关键字
+**** 
+*** 返回方法

@@ -1,0 +1,504 @@
+* java流行的原因
+ - 互联网的爆发式发展
+ - 硬件差别大，需要一个跨平台
+ - 核心优势就是跨平台
+* jvm
+ - 是一个规范
+ - 一个执行bytecode的虚拟计算机
+ - 可以用软件或硬件实现
+* 环境配置
+ - JAVA_HOME 
+ - path
+ - classpath
+* 标识符规则
+ - 可用$作为javamq标识符开头字符
+ - 不能以数字开头
+ - java以2个字节表示一个字符 (unicode)
+* 字符集
+** ISO8859-1 
+ 西欧字符集
+** BIG5
+ 台湾大五码 繁体
+** GB2312
+ 大陆简体
+** GBK
+ 2312扩展可繁体
+** GB18030
+ 最新GBK
+** Unicode
+ 国际通用
+   
+* java类型
+** 基本类型
+*** 数值型
+**** 整型 
+ - byte short int long
+ - 1 2 4 8
+**** 浮点型
+ - float double
+ - 4 8
+*** 字符型
+ - 2
+*** 布尔型
+** 引用类型
+*** 类
+*** 接口
+*** 数组
+* 自动类型转换
+ - 容量小的数据可以转换成容量大的数据类型
+ - int转float，long转float，long转double可能会损失精度
+* jdk支持整数下划线分隔
+* 变量
+ - 局部变量在使用前必须声明和初始化
+ - 实例变量如果不初始化，会自动赋默认初值
+* 运算符
+ - <<左移一位相当于乘2
+ - >>右移相当于除2
+* switch结构
+ - jdk7之后可以用字符
+#+BEGIN_SRC java
+   switch(变量名){
+     case 值:
+          //自定义代码
+         break;
+     ....
+     default:
+         // 默认代码
+        break;
+}
+#+END_SRC
+* 内存分析
+** 栈
+ 局部变量
+** 堆
+ new出来的对象
+** 方法区
+ - 堆中区域
+ - 类的信息  static变量 常量池(字符串常量)
+* 面向对象
+** 继承
+ - 子类不能得到父类的构造方法
+ - 重写的方法不能比被重写方法更严格的访问权限
+* super
+ - super直接父类对象的引用，用来访问父类中被覆盖的方法和属性
+ - 构造方法中只能放在第一行
+* final
+ - final方法可被重载
+ - final类不能被继承
+* 抽象类
+** 作用
+ - 为子类提供的一个通用模板
+ - 可限制子类的设计
+ - 方法的设计和实现分离
+** 要点
+ - 有抽象方法的类只能定义抽象类
+ - 抽象类不能实例化
+ - 可包含属性 方法和构造方法
+ - 只能用来继承
+ - 抽象方法必须被子类实现
+* 接口
+ - 只能有常量和抽象方法
+ - 常量修饰符是 public static final
+ - 方法修饰符是 public
+ - 接口的本质是规范
+ - 接口可多继承
+* 内部类
+** 作用
+ - 提供更好的封装
+ - 内部类可直接访问外部类的私有属性，但外部类不能访问内部类的属性
+** 场合
+ - 只为所在外部类提供服务的情况下使用
+** 要点
+ - 非静态内部类对象属于外部类的某个对录
+ - 当一个静态内部类对象存在，外部类对象不一定存在
+* 字符串
+** String
+ - java字符串就是一个unicode字符序列
+** StringBuilder
+ - 线程不安全，效率高
+ - 字符数组长度初始为16
+** StringBuffer
+ - 线程安全，效率低
+* 数组
+ - 查找
+ - 排序
+ - 复制
+ - 填充
+* 自动装箱与自动拆箱
+ - 基本类型与对象类之间的转换(jdk5.0之后特性)
+ - Integer 如果数值在-128- 127会当作基本类型来处理，之外会当作对象处理
+#+BEGIN_SRC java
+  Integer d3 = -129;
+  Integer d4 = -129;
+   d3==d4; --->false;
+  Integer d1 = 100;
+  Integer d2 = 100;
+   d1==d2;-->true;
+#+END_SRC
+* 日历
+ #+BEGIN_SRC java
+public static  void showCalender(int year,int month)
+	{
+		Calendar c = new GregorianCalendar();
+		c.set(Calendar.YEAR, year);
+		c.set(Calendar.MONTH, month-1);
+		c.set(Calendar.DATE, 1);
+		
+		System.out.println("日\t一\t二\t三\t四\t五\t六\t");
+		
+		int index = 0;
+		int firstWeek = c.get(Calendar.DAY_OF_WEEK);
+		for (int i = 0; i < firstWeek-1; i++) {
+			System.out.print("\t");
+			index++;
+		}
+		
+		int days = c.getActualMaximum(Calendar.DATE);
+		for (int i = 1; i < days+1; i++) {
+			System.out.print(i+"\t");
+			index++;
+			if(index%7==0)
+				System.out.print("\n");
+		}
+	} 
+ #+END_SRC
+* File类
+#+BEGIN_SRC java
+public static void showDirs(String url,int level){
+		File f = new File(url);
+		level++;
+		if(f.isDirectory()){
+			String[] children = f.list();
+			if(children!=null){
+				System.out.println("----------------------------");
+				for (String child : children) {
+					showDirs(url+"/"+child,level);
+				}
+				
+			}
+		}else{
+			System.out.println(f.toString());
+		}
+	} 
+#+END_SRC
+* 容器
+** 和数组的区别
+ - 数组容量有限制
+ - 容器只能用来存放对象
+** Collection 接口
+*** Set 接口
+ - 无顺序不可重复
+*** List 接口
+ - 有顺序可重复
+ - 底层调用的比较是否相等是用的equals而不是==，比较的是值而不是对象
+**** ArrayList
+ - 插入，修改，删除慢
+ - 查询快
+**** LinkedList
+ - 插入对象快，查询慢
+ - 链表定位时，可用二分法来判断是正序还是倒序
+**** Vector
+ - 线程安全，效率低
+*** Map 接口
+ - 键值对
+* Map
+** HashMap
+** HashTable
+ - Map中判断是否覆盖是依据equals方法
+ - Hash值可被用来快速定位
+* Set
+ - Set是通过Map来实现的
+ - 新加入的值做为了Map的key
+** HashSet
+** TreeSet
+* 泛型
+** 注意点
+ - 参数化类型
+ - 类型在使用时指定
+ - 模板
+ - 泛型不能使用在静态属性上
+ - 泛型不能使用基本类型
+** 接口中泛型
+ - 只能用在公共的抽象方法上
+*** 接口的继承
+ - 如果部分保留，则在前面保留未指定的泛型标识
+ - 子类的泛型个数不能比父类的要少
+ - 子类重写的类型随父类而定
+ - 子类中继承的属性随父类而定，自定义的类型自定义
+ - 如果没有指定具体类型，则默认是Object 
+ - 不完全等同于Object，编译不会类型检查
+** 通配符
+ - T K V E  是有类型，类型的参数赋予具体的值
+ - ？ 未知类型，可为任意类型
+ - 只能用在声明类型方法和参数上，不能用在定义泛型类上，创建对象和方法上
+** 上限和下限
+*** 上限 extends
+ - 自身和子类
+#+BEGIN_SRC java
+ test(List<? extends Apple> list){
+  
+ }
+ List<? extends Apple> list = new ArrayList<Apple>();
+test(list);
+#+END_SRC
+ - 用在数据的读取上，不能用来添加数据
+#+BEGIN_SRC java
+ class GrandFather{}
+ class Father extends GrandFather{}
+ class son extends Father{}
+ 
+ public void test(List<? extends GrandFather> list){
+  list.add(null);
+ }
+#+END_SRC
+*** 下限 super
+ - 父类和自身 
+   可以用来添加数据
+#+BEGIN_SRC java
+                         class GrandFather{}
+	class Father extends GrandFather{}
+	class Son extends Father{}
+	
+	public void test1(List<? extends GrandFather> list){
+		list.add(null);
+	}
+	
+	public static void main(String[] args) {
+		List<Son> sons = new ArrayList<Son>();
+		test2(sons);
+	}
+	public static void test2(List<? super Son> list){
+		
+	}
+
+                       public static void main(String[] args) {
+	List<? super Apple> sons = new ArrayList<Apple>();
+	test2(sons);
+	List<? super Fruit> fathers = new ArrayList<Object>();
+	test2(fathers);
+	}
+	public static void test2(List<? super Apple> list){
+	 list.add(new Apple());
+	 list.add(new FujiApple());
+	}
+#+END_SRC
+** 嵌套
+   由外到内拆分
+** 其它
+*** 多态
+    泛型没有多态
+#+BEGIN_SRC java
+ // 错误的示例
+ List<Fruit> list = new ArrayList<Apple>();
+// 正确的示例
+List<? extends Fruit> list = new ArrayList<Apple>();
+#+END_SRC
+*** 数组
+ 没有泛型数组
+ - ArrayList泛型中内容的添加与获取方式
+   添加的 时候保存类型，取出的时候强制类型转换；实际保存的是Object数组
+#+BEGIN_SRC java
+ // 错误的示例
+ Fruit<String>[] arr = new Fruit<String>[10];
+#+END_SRC
+*** 简化
+    - jdk1.7之后的简化
+ #+BEGIN_SRC java
+  List<Fruit> list = new ArrayList<>();
+ #+END_SRC
+* 迭代器与分拣
+** Iterator接口
+ 定义了如下方法：
+#+BEGIN_SRC java
+ boolean hasNext();
+ Object next();
+ void remove();
+#+END_SRC
+*** arraycopy方法实现数组的删除
+    public static void arraycopy(Object src,
+                             int srcPos,
+                             Object dest,
+                             int destPos,
+                             int length)
+    源数组中位置在 srcPos 到 srcPos+length-1 之间的组件被分别复制到目标数组中的 destPos 到 destPos+length-1 位置
+#+BEGIN_SRC java
+ System.arraycopy(elem,cursor+1,elem,cursor,this.size-(cursor-1));
+#+END_SRC
+** 深入了解迭代器
+#+BEGIN_SRC java
+public class DeepList implements Iterable
+{
+ private String[] elem = new String[20];
+ private int size = 0;
+ 
+ public int size()
+ {
+  return this.size();
+ }
+
+ // 在末尾添加元素
+public void add(String ele)
+{
+  // 判断容量不够的情况
+  if(this.size==ele.length)
+  {
+    elem =  Arrays.copyOf(elem,elem.length+20);
+  }
+  elem[size] = ele;
+  size++;
+}
+
+// 匿名内部类实现迭代器功能
+ public Iterator Iterator()
+{
+   return new Iterator(){
+       // 游标
+       private int cursor = -1;
+      // 坚持是否有下一个元素
+       public boolean hasNext()
+       {
+          return cursor+1<size;
+       }
+      // 获取下一个元素
+      public String next()
+       { 
+           cursor ++;
+           ret elem[cursor];
+       }
+     // 删除游标所在元素
+      public void remove()
+      {
+         System.arraycopy(elem,cursor+1,elem,cursor,size-(cursor+1));
+         this.cursor--;
+         size--;
+      }
+   };
+}
+
+public static void main(String[] args)
+{
+  DeepList list = new DeepList();
+  Iterator it = list.iteratro();
+  while(it.hasNext())
+  {
+     System.out.println(it.next());
+     it.remove();
+  }
+
+  for(Object o : list)
+  {
+    System.out.println(o);
+  }
+}
+}
+#+END_SRC
+** 泛型迭代器
+#+BEGIN_SRC java
+ public class DeepList<E> implements Iterable
+{
+ private Object[] elem = new Object[20];
+ private int size = 0;
+ 
+ public int size()
+ {
+  return this.size();
+ }
+
+ // 在末尾添加元素
+public void add(E ele)
+{
+  // 判断容量不够的情况
+  if(this.size==ele.length)
+  {
+    elem =  Arrays.copyOf(elem,elem.length+20);
+  }
+  elem[size] = ele;
+  size++;
+}
+
+// 匿名内部类实现迭代器功能
+ public Iterator<E> Iterator()
+{
+   return new Iterator(){
+       // 游标
+       private int cursor = -1;
+      // 坚持是否有下一个元素
+       public boolean hasNext()
+       {
+          return cursor+1<size;
+       }
+      // 获取下一个元素
+      public Object next()
+       { 
+           cursor ++;
+           ret elem[cursor];
+       }
+     // 删除游标所在元素
+      public void remove()
+      {
+         System.arraycopy(elem,cursor+1,elem,cursor,size-(cursor+1));
+         this.cursor--;
+         size--;
+      }
+   };
+}
+
+public static void main(String[] args)
+{
+  DeepList list = new DeepList();
+  Iterator it = list.iteratro();
+  while(it.hasNext())
+  {
+     System.out.println(it.next());
+     it.remove();
+  }
+
+  for(Object o : list)
+  {
+    System.out.println(o);
+  }
+}
+}
+#+END_SRC
+** HashMap
+ - 默认是1:1关系
+ - 分拣存储，分组归类
+ #+BEGIN_SRC java
+  public void main(String[] args)
+{
+  String[] str = "this is a cat and that is a mice and where is the dog?";
+  Map<String,Integer> map = new HashMap<String,Integer>();
+  for(String key : str)
+  {
+    if(!map.containsKey(key)
+    {
+       map.put(key,1);
+    }else{
+       map.put(key,map.get(key)+1 );
+    }
+  }
+ }
+ #+END_SRC
+* 容器的比较
+** 排序概念
+** 冒泡排序
+ - 简单
+ #+BEGIN_SRC java
+  int[] arr = {1,4,2,6,8,7,2,3,56,13,2,4,0,1,2};
+  for(int j=arr.length;j>0;j--)
+  {
+  for(int i=0;i<j-1;i++)
+  {
+    if(arr[i]>arr[i+1])
+    {
+       int temp = arr[i];
+       arr[i] = arr[i+1];
+       arr[i+1] = temp;
+    }
+  }
+}
+ #+END_SRC
+** Comparable
+** Comparator
+** TreeSet与TreeMap
+** Collections工具类

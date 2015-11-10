@@ -1,0 +1,152 @@
+* ECMAscript
+** 语法
+ - 区分大小写
+ - 弱类型变量
+ - 每行结尾的分号可无
+ - 注释同Java
+** 变量
+ - 用var定义
+ - 第一个字符必须是字母下划线或美元符号
+ - 其它字符可以是下划线,字母和数字
+ - 使用变量前可以不用声明
+** 关键字
+** 保留字
+** 原始类型和引用值
+ - 堆 
+ - 栈
+ - String类型是原始类型
+** 原始类型
+ - Undefineed,Null,Boolean,Number,String 
+ - typeof
+  + 返回数据的类型
+ - 当声明的变量为初始化时
+ - isFinit() 
+  + 确保该数不是无穷大
+ - NaN
+  + 非数
+ - 字符串由单双引号声明
+ - 所有的类型都有lenth属性和toString()方法
+ - 对字符类型有效的有parseInt()和parseFloat()
+** 强制转换
+ - Boolean
+ - String
+ - Number
+** 引用类型
+ - var o = new Object
+  + 可以不用()
+*** Object类
+ - 属性
+  + Constructor
+    * 对创建对象的函数的引用
+  + Prototype
+   * 对创建对象的对象原型的引用
+ - 方法
+  + HasOwnProperty
+   * 判断对象是否含有某个属性
+  + IsProtoTypeOf
+   * 判断该对象是否是某个对象的原型
+  + PropertyIsEnumerable
+   * 判断该属性是否可以使用for in语句
+  + ToString
+  + ValueOf
+*** Boolean
+*** Number
+  + toFixed(Number n)
+   * 指定小数位的字符串
+  + toExponential
+   * 科学计数法形式字符串
+  + toPrecision
+   * 最具意义的指数形式
+*** String
+  + charAt(index)
+    * 返回指定位置字符
+** 运算符
+*** 一元运算符
+ - delete 
+  + 删除以前定义的对象属性和方法的引用
+  + 只能删除开发者自定义的属性和方法
+ - void
+  + 让方法返回 Undefineed值
+  + void(window.open("about:blank")
+ - instanceOf
+  + 判断是否为某个类型的对象
+  + a instanceOf string
+ - ++/-- 自加/自减
+  + 前自加/前自减
+  + 后自加/后自减
+*** 位运算符
+**** 整数
+  - 分类
+   + 有符号
+    + 从0开始,第31位表示符号
+   + 无符号
+  - 32个位数
+  - 存储方式
+   + 正数/负数
+  - 负数的表示方法
+   + 求反码
+   + +1
+**** 位运算NOT
+  - 处理过程
+   + 转换为32位数字
+   + 反码
+   + 转换为浮点数
+  - 意义
+   + 去负数-1
+**** AND
+  - 2个都是1才返回1
+**** OR
+  - 有一位是1就返回1
+**** XOR
+  - 有一位是1时才返回1
+**** 左移
+**** 右移
+***** 有符号右移
+  - >>
+***** 无符号右移
+  - >>>
+*** Boolean运算符
+**** NOT AND OR
+** 语句
+ - 同C 
+** 函数
+ - return 之后的语句不会被执行
+ - 一个函数额可以多个return 
+ - 可以用return来退出函数
+*** 无重载
+ - 函数不能重载
+ - 同名函数会执行最后一个
+*** arguments对象
+ - 无需明确指出参数名就可以访问
+  + arguments[0] 表示第一个参数
+  + arguments.length 表示参数的个数
+- 使用 arguments 模拟函数重载
+#+BEGIN_SRC js
+ function sayHello()
+ {
+    if(arguments.length==1)
+   {
+      return arguments[0] + 10;
+  }
+   if(arguments.length==2)
+   {
+      return arguments[0] + 20;
+  }
+ }
+#+END_SRC
+*** function类
+ - 所有的函数都是function类的实例
+*** 闭包
+ - 要点
+  + 内部函数不接收参数
+  + 直接从执行环境中获取数据
+ - 例子
+#+BEGIN_SRC js
+ var iBaseNum = 10;
+ function addNumbers(iNum1,iNum2){
+   function doAddition(){
+     return iNum1 + iNum2 + iBaseNum;
+   }
+   return doAddition();
+}
+#+END_SRC

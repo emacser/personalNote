@@ -1,0 +1,14 @@
+#+TITLE tomcat类加载分析
+* tomcat中类加载器的结构与关系
+** 加载顺序
+  Bootstrap -> System -> Common ->webapp1
+                                                             ->webapp2
+** 每个类加载器分别加载什么资源
+ - 通过一个配置文件 catalina.properties来指定
+ - 该文件放在bin/bootstrap.jar中
+** 加载过程分析
+*** 入口
+ - org.apache.catalina.starup.Bootstrap类中有main方法
+*** 资源初始化
+ - main中的demon.init();
+ - 

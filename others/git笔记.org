@@ -1,0 +1,11 @@
+* 使用git管理个人文档
+** 建立项目仓库
+  - 在作为工作树的文件夹下执行 git init
+ - 文件提交 git commit
+ - 注释 git commit -m "注释内容"
+ - 设置个人信息
+  #+BEGIN_SRC bash
+  git config --global user.name "自己设置用户名"
+  git config --global user.email "自己设置邮箱"
+  #+END_SRC
+ - 忽略文件夹 echo "文件夹名称">.gitignore

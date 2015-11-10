@@ -1,0 +1,180 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css" />
+* 深入了解安卓
+** 工程结构
+ - src 源代码
+ - AndroidMainfest.xml 清单文件
+ - asserts 静态资源文件
+ - layout 布局文件
+ - drawable 程序图标
+** 了解activivy
+*** 概念
+ - 最基本的应用程序组件
+ - 一个活动对应一个单独的屏幕，它会显示由视图控件组成的用户接口，并对事件做出响应以启动其他的组件
+ - 当一个新的屏幕打开后，前一个屏幕将会暂停，并保存在历史堆栈中。用户可以返回到历史堆栈中的前一个屏幕。当屏幕不再使用时，还可以从历史堆栈中删除。Android会保留从主屏幕到每一个应用的运行屏幕。
+ - 所有活动组件都继承andriod.app.Activity类
+*** 生命周期
+ - onCreate(Bundel savedinstanceState)
+  + 生命周期开始，设置所有全局状态
+ - onStart()
+  + 可视生命周期开始
+  + 可注册一个 BroadcastReceiver来监控ui的变化
+ - onResart()
+ - onResume()
+  + 前台生命周期开始
+  + 有新的Activiy启动或设备休眠时，将调用onResume方法
+ - onPause()
+  + 前台生命周期结束
+ - onStop()
+  + 可视生命周期结束
+ - onDestory()
+  + 生命周期结束，释放所有系统资源
+*** 三个状态
+ - 激活状态： 在屏幕前台
+ - 暂停状态：失去焦点但仍对用户可见
+ - 停止状态：被另一个Activity覆盖时
+** 达解Intent
+*** 理念
+ - 鼓励减少组件间的耦合
+ - 提供通用的消息系统，来在组件与组件间传递Intent实现执行动作和产生事件
+ - 可以激活应用的三个核心组件：活动 服务 广播接收器
+ - 两种意图：
+  + 显式 调用 setComponent()或setClass()来指定组件名称或类对象
+  + 隐式 根据intent-filter中设置的action category uri和数据类型来找到最合适的组件
+** Bundel类的作用
+*** 作用
+ - 携带数据，类似Map
+** 安卓程序原理
+ - 从 AndroidMainfest.xml 入口
+  + application标签中注册了图标，标题名和activity
+  + R中注册了xml的资源在对应的唯一id
+  + intent-filter 标签监听器
+ - 设置视图
+  + 在onCreate中 setContentView(R.layout.视图名称);
+ - 打开新的Activity
+  + startActivity(当前Activity类对象，要打开的Activity类);
+  + 使用Intent intent.setClass(当前Activity类对象，要打开的Activity类);
+** 使用过滤器
+*** Activity传递参数
+ - 保存参数
+  + bundle.putString(key,value)/putInt(key,value);
+  + intent.putExtras(bundle);
+  + startActivity(intent);
+ - 获取参数
+  + Bundle bundle = this.getIntent().getExtras();
+  + bundel.getString(key)/bundel.getInt()
+*** 得到新Activity关闭后返回的数据
+ - 使用 startActivityForResult(intent对象，编号)打开新的Activity;
+ - 新的 Activity 关闭后会向前面的 Activity 传回数据
+ - 在前面的 Activity 中重写 onActivityResult(请求码，结果码，intent对象);
+ - 请求码用于标识请求来源
+  + 在 onActivityResult()方法中，可以根据请求码的值来区分不同请求来源见做出不同的业务处理
+#+BEGIN_SRC java
+ @Override protected void onActivityResult(int requestCode,int resultCode ,Intent data){
+  switch(requestCode){
+   case 1:
+    # 来自来源1的请求；
+   case 2：
+   # 来自来源3的请求；
+  ....
+  }
+ }
+#+END_SRC
+ - 结果码的作用
+  + 返回的数据来源于哪个Activity
+#+BEGIN_SRC java
+ @Override protected void onActivityResult(int requestCode,int resultCode ,Intent data){
+  switch(resultCode){
+   case 1:
+    # Activity 1返回的数据；
+   case 2：
+    # Activity 2返回的数据；
+  ....
+  }
+ }
+#+END_SRC
+* UI事件处理与布局管理
+** View 和 ViewGroup
+*** Android的界面元素
+ - View 视图 
+ - layout 布局
+ - Wigets UI元素
+ - Menus 菜单
+*** View的作用
+ - 所有高级UI组件的父类
+ - 一个View在屏幕上占据一块矩形区域
+ - 负责渲染
+ - 设置是否可见
+ - 设置是否可以获得焦点等
+*** ViewGroup的作用
+ - 是view的容器
+ - 负责对添加进ViewGroup的View进行布局
+ - 可入容纳另一个ViewGroup
+** 事件处理机制
+ - 常见控件
+  + onKeyDown
+  + onKeyUp
+  + onTouchEvent
+*** Toast控件
+ - 消息提示
+#+BEGIN_SRC java
+ Toast toast = Toast.makeText(this,要显示的信息内容，Toast.LENGTH_SHORT/LONG).show();
+#+END_SRC
+** 布局
+*** LinnerLayout 
+ - 一个组件一行
+*** AbsoluteLayout
+ - 根据绝对坐标
+*** RelativeLayout
+ - 相对某个组件
+*** TableLayout
+ - 表格方式
+*** FrameLayout
+ - 框架布局
+ - 多个组件时只显示最上面的一个组件
+ - Layout都是 ViewGroup 的子类，TableLayout 是 LinnerLayout的子类
+ - 布局可以相互嵌套
+** 样式和主题
+ - 同css样式
+#+BEGIN_SRC xml
+ <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+</style>
+ <Button
+                android:id="@+id/dummy_button"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/selectFile" />
+</Button>
+#+END_SRC
+ - 在layout/style.xml中定义样式文件，在页面中使用
+* 基础UI控件
+** 基本控件介绍
+ - Button 按钮
+ - TextView 文本框
+ - EditText 文本编辑框
+ - CheckBox 多项选择
+ - RadioButton 单项选择
+ - Spinner 下拉列表
+ - TimePicker/DatePicker 时间选择器
+ - ScrollView 滚动视图
+ - ImageView 图片视图
+ - ImageButton 图片按扭
+ - GridView 网格视图
+** Widget组件
+ - 界面中展示的各个小组件
+ - 有独立的事件处理能力
+ - 继承自View 
+ - Object -> View -> TextView
+ - Object -> View ->ImageView ->ImageButton
+* 高级UI控件
+** ProgressBar 进度条
+ - 进度条操作
+ - ProcessBar.setMax(100); 设置进度条总长度为100
+ - ProcessBar.setProgress(0); 设置开启进度的0
+** ProgessDialog
+ - 

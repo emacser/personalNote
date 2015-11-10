@@ -1,0 +1,226 @@
+* 术语
+ - 对象的含义
+  + 属性的无序集合
+** 要素
+ - 封装
+ - 聚集
+ - 继承
+ - 多态
+** 组成
+ - 属性
+ - 方法
+* 对象应用
+** 声明和实例化
+ - new
+ - 例子
+  + var oObject = new Object;
+  + var oStringObject = new String;
+** 对象废除
+ - 将对象置null
+** 早绑定和晚绑定
+ - ECMAscript是晚绑定,无需检查对象的类型
+* 类型
+** 本地对象
+*** Array类
+**** 创建
+ - var aValues = new Array(20);
+ - var aValues = new Array();
+ - var aValues = new Array("red","green");
+ - var aValues = ["red","green"];
+**** 使用
+ - aValues[0] = "red"; 
+ - aValues[1] = "green"; 
+**** 方法
+ - toString
+ - toLocalString
+  + 调用每个数组项的toString()
+ - join("连接字符串") 
+  + 将各项用指定的字符串拼接
+ - split("拆分字符串")
+  + 将字符串转变为一个Array对象
+ - concat("拼接字符串")
+  + 增加项
+ - slice(元素的索引)
+  + 返回索引位置的元素
+ - sort
+  + 默认为字符排序
+**** 栈操作
+ - Array的属性就像一个栈
+ - LIFO
+ - 提供栈操作
+  + push
+  + pop
+**** 队列操作
+ - LILO
+   + shift
+     + 删除第一个元素,返回该元素
+   + unshift
+    + 插入第一个元素
+
+**** 复杂方法
+***** splice()
+ - 把数据项插入到数组中部
+ - 删除
+   + splice(startIndex,截取的元素个数)
+   + 返回删除的元素
+ - 替换而不删除
+   + splice(startIndex,0,"替换的元素1","替换的元素2")
+   + splice(起始位置,0(要删除的数组项的个数)和要插入的项的个数,替换的元素)
+ - 替换并删除
+   + splice(startIndex,1,"替换的元素1","替换的元素2")
+   + splice(起始位置,0(要删除的数组项的个数)和要插入的项的个数,替换的元素)
+   + splice(起始位置,0(要删除的数组项的个数)和要插入的项的个数,替换的元素)
+*** Date类
+**** 创建
+ - parse
+ - utc
+ - 例子
+ #+BEGIN_SRC javaScript
+ // 建立当前日期对象
+ var date = new Date();
+//建立一般日期对象
+ var date = new Date(Date.parse("may 4,2012"));
+ var date = new Date(Date.UTC(2012,12,4));
+ var date = new Date(2012,12,24);
+#+END_SRC
+**** 方法
+ - toDateString
+ - toTimeString
+ - toLocalString
+ - toLocalDateString
+ - toLocalTimeString
+ - toUTCString
+*** 内置对象
+**** Global
+*****  方法
+ - isNaN()
+ - isFinite()
+ - parseInit()
+ - parseFloat()
+ - encodeURI()/decodeURI()
+  + 处理完整的uri,不对特殊字符编码
+ - encodeURIComponent()/decodeURIComponent()
+  + 处理部分uri
+ - eval()
+  + 将参数解释为真正的ECMAScript语句,并插入在函数所在的位置
+ - 例子
+ #+BEGIN_SRC javaScript
+ var s = "http://www.google.com/ tab /%#s";
+  alert(encodeURI(s));
+  alert(encodeURIComponent(s));
+#+END_SRC
+**** Math
+***** 方法
+ - min()
+ - max()
+ - abs()
+ - ceil()
+ - floor()
+ - round()
+ - exp()
+ - log()
+ - pop()
+ - sqrt()
+ -random()
+* 作用域
+** 公用,受保护和私有作用域
+ - 只有一种公有作用域
+** 静态作用域并非静态的
+** 受保护作用域
+ - 私有的属性和方法还可以被其他子类访问
+** 约定私有属性或方法
+ - 在属性名称前后加上下划线
+  + obj._color_ = "red";
+** this的使用
+ - 使用this可以在任意地方重用同一个函数
+** tips 
+ - 构造函数只是函数
+ - 函数可以有属性和方法
+
+* 定义类或对象
+** 工厂方式
+** 构造函数方式
+ - 例子
+ #+BEGIN_SRC javaScript
+  function createCar(color,size){
+	this.color = color;
+	this.size = size;
+	this.run = function(){
+		alert("It's running!");
+	}
+}
+var car1 = new createCar("red","12");
+car1.run();
+ #+END_SRC
+** 原型方式
+ - 例子
+#+BEGIN_SRC javaScript
+function Car(){
+}
+Car.prototype.color = "red";
+Car.prototype.size = "22";
+Car.prototype.run = function(){
+	alert(this.color);
+}
+var oCar1 = new Car();
+oCar1.run();
+#+END_SRC
+** 混合的构造/原型方式
+ - 例子
+#+BEGIN_SRC
+ function Car(color,size){
+	this.color = color;
+	this.size = size;
+	this.driver = new Array("scott","john","jobs");
+}
+
+Car.prototype.run = function(){
+	alert(this.color);
+}
+var oCar1 = new Car("blue","213");
+var oCar2 = new Car("green","213");
+oCar1.run();
+oCar2.run();
+#+END_SRC
+** 动态原型
+ - 例子
+ #+BEGIN_SRC javaScript
+ function Car(color,size){
+	this.color = color;
+	this.size = size;
+	this.driver = new Array("scott","john","jobs");
+	
+	if(typeof Car._initialized =="undefined")
+	{
+		Car.prototype.run = function(){
+			alert(this.color);
+			}
+	}
+	
+	Car._initialized = true;
+}
+ #+END_SRC
+** 混合工厂模式
+ - 例子
+ #+BEGIN_SRC javaScript
+  function Car(){
+	new oTempCar = new Object;
+	oTempCar.color = "red";
+	oTempCar.size = "12";
+	oTempCar.driver = new Array("scott","john","jobs");
+	
+	oTempCar.prototype.run = function(){
+		alert(this.color)
+		};
+	
+	return oTempCar;
+}
+ #+END_SRC
+** 重新定义已有方法和修改方法
+ - 通过函数的prototype属性修改
+ - 例子
+ #+BEGIN_SRC javaScript
+  Function.prototype.toString = function(){
+  return "this is test";
+}
+ #+END_SRC

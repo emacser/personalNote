@@ -1,0 +1,24 @@
+#+TITLE hession笔记
+* springmvn整合
+** 开启Se1rvlet
+ - 配置文件的位置 - WEB-INF/hessian-servlet
+ - 映射路径 /hessian/*
+#+BEGIN_SRC xml
+ <!-- Hessian服务开启 -->
+	<servlet>
+		<servlet-name>hessian-servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+	         classpath:spring/hessian-remoting.xml
+	       </param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>hessian-servlet</servlet-name>
+		<url-pattern>/hessian/*</url-pattern>
+	</servlet-mapping>
+#+END_SRC
+** 

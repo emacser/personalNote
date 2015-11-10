@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>链表</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2011-10-12 18:02:39 "/>
+<meta name="author" content="emacsers"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style><link rel="stylesheet" type="text/css" href="org.css">
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">链表</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 序言 </a>
+<ul>
+<li><a href="#sec-1-1">1.1 数组的缺点 </a></li>
+<li><a href="#sec-1-2">1.2 链表 </a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 链接点 </a>
+<ul>
+<li><a href="#sec-2-1">2.1 特点 </a></li>
+<li><a href="#sec-2-2">2.2 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 单链表 </a>
+<ul>
+<li><a href="#sec-3-1">3.1 特点 </a></li>
+<li><a href="#sec-3-2">3.2 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 查找和删除指定链接点 </a>
+<ul>
+<li><a href="#sec-4-1">4.1 find </a></li>
+<li><a href="#sec-4-2">4.2 delete </a></li>
+<li><a href="#sec-4-3">4.3 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 双端链接点 </a>
+<ul>
+<li><a href="#sec-5-1">5.1 特点 </a></li>
+<li><a href="#sec-5-2">5.2 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 链表的效率 </a></li>
+<li><a href="#sec-7">7 抽象数据类型 </a>
+<ul>
+<li><a href="#sec-7-1">7.1 用链实现的栈 </a>
+<ul>
+<li><a href="#sec-7-1-1">7.1.1 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-7-2">7.2 用链表实现的队列 </a>
+<ul>
+<li><a href="#sec-7-2-1">7.2.1 例子 </a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 有序链表 </a>
+<ul>
+<li><a href="#sec-8-1">8.1 特点 </a></li>
+<li><a href="#sec-8-2">8.2 插入 </a></li>
+<li><a href="#sec-8-3">8.3 效率 </a></li>
+<li><a href="#sec-8-4">8.4 表插入排序 </a></li>
+</ul>
+</li>
+<li><a href="#sec-9">9 双向链表 </a>
+<ul>
+<li><a href="#sec-9-1">9.1 特点 </a></li>
+<li><a href="#sec-9-2">9.2 例子 </a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10 迭代器 </a>
+<ul>
+<li><a href="#sec-10-1">10.1 作用 </a></li>
+<li><a href="#sec-10-2">10.2 例子 </a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 序言 </h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 数组的缺点 </h3>
+<div class="outline-text-3" id="text-1-1">
+
+<ul>
+<li>插入/搜索/删除低效
+</li>
+<li>大小不可变
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 链表 </h3>
+<div class="outline-text-3" id="text-1-2">
+
+<ul>
+<li>解决数组的缺点
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 链接点 </h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 特点 </h3>
+<div class="outline-text-3" id="text-2-1">
+
+<ul>
+<li>数据项包含在Link中
+</li>
+<li>每个链接点都是某个Link的对象
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 例子 </h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+
+
+<pre class="src src-java">  <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">Link</span>
+{
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Object</span> <span style="color: #7fffd4; font-weight: bold;">obj</span> ;
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">next</span>;
+}
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 单链表 </h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 特点 </h3>
+<div class="outline-text-3" id="text-3-1">
+
+<ul>
+<li>表头插入数据
+</li>
+<li>表头删除数据
+</li>
+</ul>
+
+<p> 0 遍历链表显示内容
+</p></div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 例子 </h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+
+
+<pre class="src src-java"> <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">Link</span>
+   {
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">iData</span>;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">data item</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">double</span> <span style="color: #7fffd4; font-weight: bold;">dData</span>;           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">data item</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">next</span>;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">next link in list</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> Link(<span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">id</span>, <span style="color: #9acd32; font-weight: bold;">double</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>) <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      iData = id;                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">initialize data</span>
+      dData = dd;                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">('next' is automatically</span>
+      }                           <span style="color: #add8e6;">//  </span><span style="color: #add8e6;">set to null)</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayLink</span>()      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">display ourself</span>
+      {
+      System.out.print(<span style="color: #ffa07a;">"{"</span> + iData + <span style="color: #ffa07a;">", "</span> + dData + <span style="color: #ffa07a;">"} "</span>);
+      }
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class Link</span>
+<span style="color: #add8e6;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">first</span>;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to first link on list</span>
+
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> LinkList()              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      first = <span style="color: #7fffd4;">null</span>;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">no links on list yet</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if list is empty</span>
+      {
+      <span style="color: #fa8072;">return</span> (first==<span style="color: #7fffd4;">null</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+                                  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at start of list</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertFirst</span>(<span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">id</span>, <span style="color: #9acd32; font-weight: bold;">double</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(id, dd);
+      newLink.next = first;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old first</span>
+      first = newLink;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">deleteFirst</span>()      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete first item</span>
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes list not empty)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">temp</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">save reference to link</span>
+      first = first.next;         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete it: first--&gt;old next</span>
+      <span style="color: #fa8072;">return</span> temp;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">return deleted link</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayList</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"List (first--&gt;last): "</span>);
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning of list</span>
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span>)      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until end of list,</span>
+         {
+         current.displayLink();   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">print data</span>
+         current = current.next;  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         }
+      System.out.println(<span style="color: #ffa07a;">""</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class LinkList</span>
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 查找和删除指定链接点 </h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> find </h3>
+<div class="outline-text-3" id="text-4-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> delete </h3>
+<div class="outline-text-3" id="text-4-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> 例子 </h3>
+<div class="outline-text-3" id="text-4-3">
+
+
+
+
+<pre class="src src-java"> <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">find</span>(<span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">key</span>)      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">find link with given key</span>
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at 'first'</span>
+      <span style="color: #fa8072;">while</span>(current.iData != key)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">while no match,</span>
+         {
+         <span style="color: #fa8072;">if</span>(current.next == <span style="color: #7fffd4;">null</span>)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if end of list,</span>
+            <span style="color: #fa8072;">return</span> <span style="color: #7fffd4;">null</span>;                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">didn't find it</span>
+         <span style="color: #fa8072;">else</span>                            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not end of list,</span>
+            current = current.next;      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">go to next link</span>
+         }
+      <span style="color: #fa8072;">return</span> current;                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">found it</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">delete</span>(<span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">key</span>)    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete link with given key</span>
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">search for link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">previous</span> = first;
+      <span style="color: #fa8072;">while</span>(current.iData != key)
+         {
+         <span style="color: #fa8072;">if</span>(current.next == <span style="color: #7fffd4;">null</span>)
+            <span style="color: #fa8072;">return</span> <span style="color: #7fffd4;">null</span>;                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">didn't find it</span>
+         <span style="color: #fa8072;">else</span>
+            {
+            previous = current;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">go to next link</span>
+            current = current.next;
+            }
+         }                               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">found it</span>
+      <span style="color: #fa8072;">if</span>(current == first)               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if first link,</span>
+         first = first.next;             <span style="color: #add8e6;">//    </span><span style="color: #add8e6;">change first</span>
+      <span style="color: #fa8072;">else</span>                               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">otherwise,</span>
+         previous.next = current.next;   <span style="color: #add8e6;">//    </span><span style="color: #add8e6;">bypass it</span>
+      <span style="color: #fa8072;">return</span> current;
+      }
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 双端链接点 </h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> 特点 </h3>
+<div class="outline-text-3" id="text-5-1">
+
+<ul>
+<li>可在表尾直接插入一个链接点
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> 例子 </h3>
+<div class="outline-text-3" id="text-5-2">
+
+
+
+
+<pre class="src src-java"> <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">Link</span>
+   {
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dData</span>;                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">data item</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">next</span>;                  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">next link in list</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> Link(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">d</span>)                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      { dData = d; }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayLink</span>()          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">display this link</span>
+      { System.out.print(dData + <span style="color: #ffa07a;">" "</span>); }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class Link</span>
+<span style="color: #add8e6;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">FirstLastList</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">first</span>;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to first link</span>
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">last</span>;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to last link</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> FirstLastList()            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      first = <span style="color: #7fffd4;">null</span>;                  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">no links on list yet</span>
+      last = <span style="color: #7fffd4;">null</span>;
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if no links</span>
+      { <span style="color: #fa8072;">return</span> first==<span style="color: #7fffd4;">null</span>; }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertFirst</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at front of list</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+
+      <span style="color: #fa8072;">if</span>( isEmpty() )                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if empty list,</span>
+         last = newLink;             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- last</span>
+      newLink.next = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old first</span>
+      first = newLink;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertLast</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at end of list</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+      <span style="color: #fa8072;">if</span>( isEmpty() )                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if empty list,</span>
+         first = newLink;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      <span style="color: #fa8072;">else</span>
+         last.next = newLink;        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old last --&gt; newLink</span>
+      last = newLink;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- last</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">deleteFirst</span>()         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete first link</span>
+      {                              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">temp</span> = first.dData;
+      <span style="color: #fa8072;">if</span>(first.next == <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if only one item</span>
+         last = <span style="color: #7fffd4;">null</span>;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">null &lt;-- last</span>
+      first = first.next;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; old next</span>
+      <span style="color: #fa8072;">return</span> temp;
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayList</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"List (first--&gt;last): "</span>);
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning</span>
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until end of list,</span>
+         {
+         current.displayLink();      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">print data</span>
+         current = current.next;     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         }
+      System.out.println(<span style="color: #ffa07a;">""</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class FirstLastList</span>
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 链表的效率 </h2>
+<div class="outline-text-2" id="text-6">
+
+<ul>
+<li>表头插入和删除速度块
+</li>
+<li>查找和删除指定链接点
+</li>
+<li>无容量限制
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 抽象数据类型 </h2>
+<div class="outline-text-2" id="text-7">
+
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> 用链实现的栈 </h3>
+<div class="outline-text-3" id="text-7-1">
+
+
+</div>
+
+<div id="outline-container-7-1-1" class="outline-4">
+<h4 id="sec-7-1-1"><span class="section-number-4">7.1.1</span> 例子 </h4>
+<div class="outline-text-4" id="text-7-1-1">
+
+
+
+
+<pre class="src src-java">  <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">Link</span>
+   {
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dData</span>;             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">data item</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">next</span>;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">next link in list</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> Link(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      { dData = dd; }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayLink</span>()      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">display ourself</span>
+      { System.out.print(dData + <span style="color: #ffa07a;">" "</span>); }
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class Link</span>
+<span style="color: #add8e6;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">first</span>;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to first item on list</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> LinkList()              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      { first = <span style="color: #7fffd4;">null</span>; }           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">no items on list yet</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if list is empty</span>
+      { <span style="color: #fa8072;">return</span> (first==<span style="color: #7fffd4;">null</span>); }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertFirst</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>) <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at start of list</span>
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);
+      newLink.next = first;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old first</span>
+      first = newLink;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">deleteFirst</span>()      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete first item</span>
+      {                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes list not empty)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">temp</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">save reference to link</span>
+      first = first.next;         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete it: first--&gt;old next</span>
+      <span style="color: #fa8072;">return</span> temp.dData;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">return deleted link</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayList</span>()
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning of list</span>
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span>)      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until end of list,</span>
+         {
+         current.displayLink();   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">print data</span>
+         current = current.next;  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         }
+      System.out.println(<span style="color: #ffa07a;">""</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class LinkList</span>
+<span style="color: #add8e6;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">LinkStack</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span> <span style="color: #7fffd4; font-weight: bold;">theList</span>;
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> LinkStack()             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      theList = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span>();
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">push</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">j</span>)     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">put item on top of stack</span>
+      {
+      theList.insertFirst(j);
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">pop</span>()            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">take item from top of stack</span>
+      {
+      <span style="color: #fa8072;">return</span> theList.deleteFirst();
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if stack is empty</span>
+      {
+      <span style="color: #fa8072;">return</span> ( theList.isEmpty() );
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayStack</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"Stack (top--&gt;bottom): "</span>);
+      theList.displayList();
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class LinkStack</span>
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> 用链表实现的队列 </h3>
+<div class="outline-text-3" id="text-7-2">
+
+
+</div>
+
+<div id="outline-container-7-2-1" class="outline-4">
+<h4 id="sec-7-2-1"><span class="section-number-4">7.2.1</span> 例子 </h4>
+<div class="outline-text-4" id="text-7-2-1">
+
+
+
+
+<pre class="src src-java">  <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">LinkQueue</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">FirstLastList</span> <span style="color: #7fffd4; font-weight: bold;">theList</span>;
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> LinkQueue()                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      { theList = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">FirstLastList</span>(); }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make a 2-ended list</span>
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if queue is empty</span>
+      { <span style="color: #fa8072;">return</span> theList.isEmpty(); }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insert</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">j</span>)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert, rear of queue</span>
+      { theList.insertLast(j); }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">remove</span>()              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">remove, front of queue</span>
+      {  <span style="color: #fa8072;">return</span> theList.deleteFirst();  }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayQueue</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"Queue (front--&gt;rear): "</span>);
+      theList.displayList();
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end class LinkQueue</span>
+</pre>
+
+
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 有序链表 </h2>
+<div class="outline-text-2" id="text-8">
+
+
+</div>
+
+<div id="outline-container-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> 特点 </h3>
+<div class="outline-text-3" id="text-8-1">
+
+<ul>
+<li>数据按照关键值有序排列
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="section-number-3">8.2</span> 插入 </h3>
+<div class="outline-text-3" id="text-8-2">
+
+<ul>
+<li>例子
+</li>
+</ul>
+
+
+
+
+<pre class="src src-java"># &#25554;&#20837;&#19982;&#26080;&#24207;&#38142;&#34920;&#19981;&#21516;
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> insert(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">key</span>)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert, in order</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(key);    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">previous</span> = <span style="color: #7fffd4;">null</span>;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at first</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;
+                                       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until end of list,</span>
+# &#22914;&#26524;&#25554;&#20837;&#30340;&#20540;&#27604;&#24403;&#21069;&#38142;&#25509;&#30340;&#20540;&#35201;&#22823;,&#21017;&#27604;&#36739;&#19979;&#19968;&#20010;&#20301;&#32622;&#30340;&#20540;
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span> &amp;&amp; key &gt; current.dData)
+         {                             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">or key &gt; current,</span>
+         previous = current;
+         current = current.next;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">go to next item</span>
+         }
+# &#22914;&#26524;&#24403;&#21069;&#38142;&#25509;&#28857;&#20026;&#31354;,&#21017;&#23558;&#26032;&#38142;&#25509;&#28857;&#28155;&#21152;&#21040;&#38142;&#34920;&#20013;
+      <span style="color: #fa8072;">if</span>(previous==<span style="color: #7fffd4;">null</span>)               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">at beginning of list</span>
+         first = newLink;              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      <span style="color: #fa8072;">else</span>                             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not at beginning</span>
+# &#22914;&#26524;&#24403;&#21069;&#38142;&#25509;&#28857;&#38750;&#31354;,<span style="color: #9acd32; font-weight: bold;">&#21017;&#23558;&#21069;&#19968;&#20301;&#32622;&#25351;&#21521;&#26032;&#38142;&#25509;&#28857;</span>
+         previous.<span style="color: #7fffd4; font-weight: bold;">next</span> = newLink;      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old prev --&gt; newLink</span>
+# &#26032;&#38142;&#25509;&#28857;&#25351;&#21521;&#24403;&#21069;&#20301;&#32622;&#30340;&#38142;&#25509;&#28857;
+      newLink.next = current;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old currnt</span>
+      }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end insert()</span>
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-8-3" class="outline-3">
+<h3 id="sec-8-3"><span class="section-number-3">8.3</span> 效率 </h3>
+<div class="outline-text-3" id="text-8-3">
+
+<ul>
+<li>插入和删除操作需要O(N)次比较
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-8-4" class="outline-3">
+<h3 id="sec-8-4"><span class="section-number-3">8.4</span> 表插入排序 </h3>
+<div class="outline-text-3" id="text-8-4">
+
+<ul>
+<li>将一个无序数组插入一个有序链表中,再删除,将每个元素依次放入数组中
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> 双向链表 </h2>
+<div class="outline-text-2" id="text-9">
+
+
+</div>
+
+<div id="outline-container-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="section-number-3">9.1</span> 特点 </h3>
+<div class="outline-text-3" id="text-9-1">
+
+<ul>
+<li>解决反向遍历的问题
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-9-2" class="outline-3">
+<h3 id="sec-9-2"><span class="section-number-3">9.2</span> 例子 </h3>
+<div class="outline-text-3" id="text-9-2">
+
+
+
+
+<pre class="src src-java">  <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">DoublyLinkedList</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">first</span>;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to first item</span>
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">last</span>;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">ref to last item</span>
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> DoublyLinkedList()         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      first = <span style="color: #7fffd4;">null</span>;                  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">no items on list yet</span>
+      last = <span style="color: #7fffd4;">null</span>;
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">isEmpty</span>()          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if no links</span>
+      { <span style="color: #fa8072;">return</span> first==<span style="color: #7fffd4;">null</span>; }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertFirst</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at front of list</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+
+      <span style="color: #fa8072;">if</span>( isEmpty() )                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if empty list,</span>
+         last = newLink;             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- last</span>
+      <span style="color: #fa8072;">else</span>
+         first.previous = newLink;   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- old first</span>
+      newLink.next = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old first</span>
+      first = newLink;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertLast</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert at end of list</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+      <span style="color: #fa8072;">if</span>( isEmpty() )                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if empty list,</span>
+         first = newLink;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; newLink</span>
+      <span style="color: #fa8072;">else</span>
+         {
+         last.next = newLink;        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old last --&gt; newLink</span>
+         newLink.previous = last;    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old last &lt;-- newLink</span>
+         }
+      last = newLink;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- last</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">deleteFirst</span>()         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete first link</span>
+      {                              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">temp</span> = first;
+      <span style="color: #fa8072;">if</span>(first.next == <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if only one item</span>
+         last = <span style="color: #7fffd4;">null</span>;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">null &lt;-- last</span>
+      <span style="color: #fa8072;">else</span>
+         first.next.previous = <span style="color: #7fffd4;">null</span>; <span style="color: #add8e6;">// </span><span style="color: #add8e6;">null &lt;-- old next</span>
+      first = first.next;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; old next</span>
+      <span style="color: #fa8072;">return</span> temp;
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">deleteLast</span>()          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete last link</span>
+      {                              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">temp</span> = last;
+      <span style="color: #fa8072;">if</span>(first.next == <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if only one item</span>
+         first = <span style="color: #7fffd4;">null</span>;               <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; null</span>
+      <span style="color: #fa8072;">else</span>
+         last.previous.next = <span style="color: #7fffd4;">null</span>;  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old previous --&gt; null</span>
+      last = last.previous;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old previous &lt;-- last</span>
+      <span style="color: #fa8072;">return</span> temp;
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+                                     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert dd just after key</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">insertAfter</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">key</span>, <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)
+      {                              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning</span>
+      <span style="color: #fa8072;">while</span>(current.dData != key)    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until match is found,</span>
+         {
+         current = current.next;     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         <span style="color: #fa8072;">if</span>(current == <span style="color: #7fffd4;">null</span>)
+            <span style="color: #fa8072;">return</span> <span style="color: #7fffd4;">false</span>;            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">didn't find it</span>
+         }
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">make new link</span>
+
+      <span style="color: #fa8072;">if</span>(current==last)              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">if last link,</span>
+         {
+         newLink.next = <span style="color: #7fffd4;">null</span>;        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; null</span>
+         last = newLink;             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- last</span>
+         }
+      <span style="color: #fa8072;">else</span>                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not last link,</span>
+         {
+         newLink.next = current.next; <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink --&gt; old next</span>
+                                      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">newLink &lt;-- old next</span>
+         current.next.previous = newLink;
+         }
+      newLink.previous = current;    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old current &lt;-- newLink</span>
+      current.next = newLink;        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old current --&gt; newLink</span>
+      <span style="color: #fa8072;">return</span> <span style="color: #7fffd4;">true</span>;                   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">found it, did insertion</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">deleteKey</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">key</span>)   <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete item w/ given key</span>
+      {                              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(assumes non-empty list)</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning</span>
+      <span style="color: #fa8072;">while</span>(current.dData != key)    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until match is found,</span>
+         {
+         current = current.next;     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         <span style="color: #fa8072;">if</span>(current == <span style="color: #7fffd4;">null</span>)
+            <span style="color: #fa8072;">return</span> <span style="color: #7fffd4;">null</span>;             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">didn't find it</span>
+         }
+      <span style="color: #fa8072;">if</span>(current==first)             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">found it; first item?</span>
+         first = current.next;       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">first --&gt; old next</span>
+      <span style="color: #fa8072;">else</span>                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not first</span>
+                                     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old previous --&gt; old next</span>
+         current.previous.next = current.next;
+
+      <span style="color: #fa8072;">if</span>(current==last)              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">last item?</span>
+         last = current.previous;    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old previous &lt;-- last</span>
+      <span style="color: #fa8072;">else</span>                           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not last</span>
+                                     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">old previous &lt;-- old next</span>
+         current.next.previous = current.previous;
+      <span style="color: #fa8072;">return</span> current;                <span style="color: #add8e6;">// </span><span style="color: #add8e6;">return value</span>
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayForward</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"List (first--&gt;last): "</span>);
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = first;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at beginning</span>
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until end of list,</span>
+         {
+         current.displayLink();      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">display data</span>
+         current = current.next;     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to next link</span>
+         }
+      System.out.println(<span style="color: #ffa07a;">""</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">displayBackward</span>()
+      {
+      System.out.print(<span style="color: #ffa07a;">"List (last--&gt;first): "</span>);
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span> = last;           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at end</span>
+      <span style="color: #fa8072;">while</span>(current != <span style="color: #7fffd4;">null</span>)         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">until start of list,</span>
+         {
+         current.displayLink();      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">display data</span>
+         current = current.previous; <span style="color: #add8e6;">// </span><span style="color: #add8e6;">move to previous link</span>
+         }
+      System.out.println(<span style="color: #ffa07a;">""</span>);
+      }
+<span style="color: #add8e6;">// </span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   }
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> 迭代器 </h2>
+<div class="outline-text-2" id="text-10">
+
+
+</div>
+
+<div id="outline-container-10-1" class="outline-3">
+<h3 id="sec-10-1"><span class="section-number-3">10.1</span> 作用 </h3>
+<div class="outline-text-3" id="text-10-1">
+
+<ul>
+<li>遍历链表
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-10-2" class="outline-3">
+<h3 id="sec-10-2"><span class="section-number-3">10.2</span> 例子 </h3>
+<div class="outline-text-3" id="text-10-2">
+
+
+
+
+<pre class="src src-java"> <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">ListIterator</span>
+   {
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">current</span>;          <span style="color: #add8e6;">// </span><span style="color: #add8e6;">current link</span>
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">previous</span>;         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">previous link</span>
+   <span style="color: #fa8072;">private</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span> <span style="color: #7fffd4; font-weight: bold;">ourList</span>;      <span style="color: #add8e6;">// </span><span style="color: #add8e6;">our linked list</span>
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> ListIterator(<span style="color: #9acd32; font-weight: bold;">LinkList</span> <span style="color: #7fffd4; font-weight: bold;">list</span>) <span style="color: #add8e6;">// </span><span style="color: #add8e6;">constructor</span>
+      {
+      ourList = list;
+      reset();
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">reset</span>()            <span style="color: #add8e6;">// </span><span style="color: #add8e6;">start at 'first'</span>
+      {
+      current = ourList.getFirst();
+      previous = <span style="color: #7fffd4;">null</span>;
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">boolean</span> <span style="color: #7fffd4; font-weight: bold;">atEnd</span>()         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">true if last link</span>
+      { <span style="color: #fa8072;">return</span> (current.next==<span style="color: #7fffd4;">null</span>); }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">nextLink</span>()         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">go to next link</span>
+      {
+      previous = current;
+      current = current.next;
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">getCurrent</span>()       <span style="color: #add8e6;">// </span><span style="color: #add8e6;">get current link</span>
+      { <span style="color: #fa8072;">return</span> current; }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertAfter</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert after</span>
+      {                                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">current link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);
+
+      <span style="color: #fa8072;">if</span>( ourList.isEmpty() )     <span style="color: #add8e6;">// </span><span style="color: #add8e6;">empty list</span>
+         {
+         ourList.setFirst(newLink);
+         current = newLink;
+         }
+      <span style="color: #fa8072;">else</span>                        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not empty</span>
+         {
+         newLink.next = current.next;
+         current.next = newLink;
+         nextLink();              <span style="color: #add8e6;">// </span><span style="color: #add8e6;">point to new link</span>
+         }
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">insertBefore</span>(<span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">dd</span>)    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert before</span>
+      {                                 <span style="color: #add8e6;">// </span><span style="color: #add8e6;">current link</span>
+      <span style="color: #9acd32; font-weight: bold;">Link</span> <span style="color: #7fffd4; font-weight: bold;">newLink</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">Link</span>(dd);
+
+      <span style="color: #fa8072;">if</span>(previous == <span style="color: #7fffd4;">null</span>)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">beginning of list</span>
+         {                        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">(or empty list)</span>
+         newLink.next = ourList.getFirst();
+         ourList.setFirst(newLink);
+         reset();
+         }
+      <span style="color: #fa8072;">else</span>                        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not beginning</span>
+         {
+         newLink.next = previous.next;
+         previous.next = newLink;
+         current = newLink;
+         }
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">deleteCurrent</span>()    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete item at current</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">value</span> = current.dData;
+      <span style="color: #fa8072;">if</span>(previous == <span style="color: #7fffd4;">null</span>)        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">beginning of list</span>
+         {
+         ourList.setFirst(current.next);
+         reset();
+         }
+      <span style="color: #fa8072;">else</span>                        <span style="color: #add8e6;">// </span><span style="color: #add8e6;">not beginning</span>
+         {
+         previous.next = current.next;
+         <span style="color: #fa8072;">if</span>( atEnd() )
+            reset();
+         <span style="color: #fa8072;">else</span>
+            current = current.next;
+         }
+      <span style="color: #fa8072;">return</span> value;
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   }
+</pre>
+
+
+
+<ul>
+<li>迭代器的使用
+<ul>
+<li>例子
+</li>
+</ul>
+
+</li>
+</ul>
+
+
+
+
+<pre class="src src-java"> <span style="color: #fa8072;">class</span> <span style="color: #9acd32; font-weight: bold;">InterIterApp</span>
+   {
+   <span style="color: #fa8072;">public</span> <span style="color: #fa8072;">static</span> <span style="color: #9acd32; font-weight: bold;">void</span> <span style="color: #7fffd4; font-weight: bold;">main</span>(<span style="color: #9acd32; font-weight: bold;">String</span>[] <span style="color: #7fffd4; font-weight: bold;">args</span>) <span style="color: #fa8072;">throws</span> <span style="color: #9acd32; font-weight: bold;">IOException</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">LinkList</span> <span style="color: #7fffd4; font-weight: bold;">theList</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">LinkList</span>();           <span style="color: #add8e6;">// </span><span style="color: #add8e6;">new list</span>
+      <span style="color: #9acd32; font-weight: bold;">ListIterator</span> <span style="color: #7fffd4; font-weight: bold;">iter1</span> = theList.getIterator();  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">new iter</span>
+      <span style="color: #9acd32; font-weight: bold;">long</span> <span style="color: #7fffd4; font-weight: bold;">value</span>;
+
+      iter1.insertAfter(20);             <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert items</span>
+      iter1.insertAfter(40);
+      iter1.insertAfter(80);
+      iter1.insertBefore(60);
+
+      <span style="color: #fa8072;">while</span>(<span style="color: #7fffd4;">true</span>)
+         {
+         System.out.print(<span style="color: #ffa07a;">"Enter first letter of show, reset, "</span>);
+         System.out.print(<span style="color: #ffa07a;">"next, get, before, after, delete: "</span>);
+         System.out.flush();
+         <span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">choice</span> = getChar();         <span style="color: #add8e6;">// </span><span style="color: #add8e6;">get user's option</span>
+         <span style="color: #fa8072;">switch</span>(choice)
+            {
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'s'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">show list</span>
+               <span style="color: #fa8072;">if</span>( !theList.isEmpty() )
+                  theList.displayList();
+               <span style="color: #fa8072;">else</span>
+                  System.out.println(<span style="color: #ffa07a;">"List is empty"</span>);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'r'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">reset (to first)</span>
+               iter1.reset();
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'n'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">advance to next item</span>
+               <span style="color: #fa8072;">if</span>( !theList.isEmpty() &amp;&amp; !iter1.atEnd() )
+                  iter1.nextLink();
+               <span style="color: #fa8072;">else</span>
+                  System.out.println(<span style="color: #ffa07a;">"Can't go to next link"</span>);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'g'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">get current item</span>
+               <span style="color: #fa8072;">if</span>( !theList.isEmpty() )
+                  {
+                  value = iter1.getCurrent().dData;
+                  System.out.println(<span style="color: #ffa07a;">"Returned "</span> + value);
+                  }
+               <span style="color: #fa8072;">else</span>
+                  System.out.println(<span style="color: #ffa07a;">"List is empty"</span>);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'b'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert before current</span>
+               System.out.print(<span style="color: #ffa07a;">"Enter value to insert: "</span>);
+               System.out.flush();
+               value = getInt();
+               iter1.insertBefore(value);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'a'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">insert after current</span>
+               System.out.print(<span style="color: #ffa07a;">"Enter value to insert: "</span>);
+               System.out.flush();
+               value = getInt();
+               iter1.insertAfter(value);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">case</span> <span style="color: #ffa07a;">'d'</span>:                    <span style="color: #add8e6;">// </span><span style="color: #add8e6;">delete current item</span>
+               <span style="color: #fa8072;">if</span>( !theList.isEmpty() )
+                  {
+                  value = iter1.deleteCurrent();
+                  System.out.println(<span style="color: #ffa07a;">"Deleted "</span> + value);
+                  }
+               <span style="color: #fa8072;">else</span>
+                  System.out.println(<span style="color: #ffa07a;">"Can't delete"</span>);
+               <span style="color: #fa8072;">break</span>;
+            <span style="color: #fa8072;">default</span>:
+               System.out.println(<span style="color: #ffa07a;">"Invalid entry"</span>);
+            }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end switch</span>
+         }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end while</span>
+      }  <span style="color: #add8e6;">// </span><span style="color: #add8e6;">end main()</span>
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">--------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #fa8072;">static</span> <span style="color: #9acd32; font-weight: bold;">String</span> <span style="color: #7fffd4; font-weight: bold;">getString</span>() <span style="color: #fa8072;">throws</span> <span style="color: #9acd32; font-weight: bold;">IOException</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">InputStreamReader</span> <span style="color: #7fffd4; font-weight: bold;">isr</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">InputStreamReader</span>(System.in);
+      <span style="color: #9acd32; font-weight: bold;">BufferedReader</span> <span style="color: #7fffd4; font-weight: bold;">br</span> = <span style="color: #fa8072;">new</span> <span style="color: #9acd32; font-weight: bold;">BufferedReader</span>(isr);
+      <span style="color: #9acd32; font-weight: bold;">String</span> <span style="color: #7fffd4; font-weight: bold;">s</span> = br.readLine();
+      <span style="color: #fa8072;">return</span> s;
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #fa8072;">static</span> <span style="color: #9acd32; font-weight: bold;">char</span> <span style="color: #7fffd4; font-weight: bold;">getChar</span>() <span style="color: #fa8072;">throws</span> <span style="color: #9acd32; font-weight: bold;">IOException</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">String</span> <span style="color: #7fffd4; font-weight: bold;">s</span> = getString();
+      <span style="color: #fa8072;">return</span> s.charAt(0);
+      }
+
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   <span style="color: #fa8072;">public</span> <span style="color: #fa8072;">static</span> <span style="color: #9acd32; font-weight: bold;">int</span> <span style="color: #7fffd4; font-weight: bold;">getInt</span>() <span style="color: #fa8072;">throws</span> <span style="color: #9acd32; font-weight: bold;">IOException</span>
+      {
+      <span style="color: #9acd32; font-weight: bold;">String</span> <span style="color: #7fffd4; font-weight: bold;">s</span> = getString();
+      <span style="color: #fa8072;">return</span> Integer.parseInt(s);
+      }
+<span style="color: #add8e6;">//</span><span style="color: #add8e6;">-------------------------------------------------------------</span>
+   } 
+</pre>
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2011-10-12 18:02:39 </p>
+<p class="author">Author: emacsers</p>
+<p class="creator">Org version 7.7 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

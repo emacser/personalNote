@@ -1,0 +1,194 @@
+* 事件简介
+** 特点
+ - 事件是DOM的一部分
+ - 时间在DOM Level3中规定
+ - ie是唯一一个对DOM事件模型缺少良好支持的主流浏览器
+* 事件流
+ - 事件发生顺序是IE和其他浏览器在事件支持上的主要差别
+** 冒泡型事件
+*** 特点
+ - ie6在html中也能接收到冒泡
+ - firefox在windows窗口中也能收到对象
+** 捕获型事件
+*** 特点
+ - firefox实现的方案与冒泡型相反
+** DOM事件流
+*** 特点
+ - DOM同时支持2种事件模型
+ - 文本节点也会触发事件(ie不会)
+* 事件处理函数
+** 概念
+ - 事件处理函数(事件监听函数)
+  + 响应某个事件而调用的函数 
+** 要点
+ - xhtml代码中,事件处理函数都必须小写
+ - 事件处理函数大小写任意
+** ie
+*** 特点
+ - 每个元素和window对象有两个方法
+  + attachEvent() -- 给事件绑定一个处理函数
+  + detachEvent() -- 给事件解除绑定的函数
+ - 例子 
+ #+BEGIN_SRC javaScript
+ var cliEle = document.getElementById("clickme");
+	cliEle.attachEvent("onclick",test);
+	att
+	function test(){
+		log.debug("刚才谁点我了!!");
+	}
+#+END_SRC
+** dom
+*** 特点
+ - 事件分配或移除
+  * addEventListener()
+  * removeEventListener()
+ - 参数
+  * 事件名称
+  * 要分配的函数
+  * 处理函数阶段(false冒泡/true捕获)
+ - 可附加多个事件处理函数
+ - 处理函数的阶段必须匹配,否则无效
+ - 与传统直接赋值的区别
+  * 功能相同
+  * 后续对事件的处理函数清除前面的赋值
+*** 例子
+ #+BEGIN_SRC javaScript
+  var fnclick = function(){
+    alert("I'm clicked!");
+  }
+  var oDiv = document.getElementById("div1");
+  oDiv.addEventListener("click",fnclick,false);
+  //do some other stuff hrere
+  oDiv.removeEventListener("click",fnclick,false);
+  //hander
+ #+END_SRC 
+* 事件对象
+** 包含内容
+ - 引起事件的对象
+ - 事件发生时鼠标的信息
+ - 事件发生时键盘的信息
+** 定位
+*** 特点
+ - 在ie中事件对象是window对象的一个属性event
+ - 在dom中event对象作为唯一的参数传递给事件处理函数
+** 属性/方法
+** 相似性
+*** 获取事件类型
+*** 获取按键代码
+*** 检测shift alt ctrl
+*** 获取客户端坐标
+*** 获取屏幕坐标
+ - 例子
+#+BEGIN_SRC javaScript
+  var sType = oEvent.type;
+  var iKeyCode = oEvent.keyCode;
+  var bShift  = oEvent.shiftKey;
+  var bAlt = oEvent.altKey;
+  var bCtrl = oEvent.ctrlKey;
+  var iClientX = oEvent.clientX;
+  var iClientY = oEvent.clientY;
+  var iScreenX = oEvent.screenX;
+  var iScreenY = oEvent.screenY;
+#+END_SRC
+** 区别
+*** 获取目标
+ - ie使用srcElement获取目标元素
+ - DOM使用target属性
+ - 例子
+#+BEGIN_SRC javaScript
+  //ie
+ var oTarget = oEvent.srcElement;
+ //dom
+ var oTarget = oEvent.target;
+#+END_SRC
+*** 获取字符代码
+**** COMMENT 特点
+ - ie返回字符的unicode值
+ - dom返回按键的数值代码
+ - 例子
+#+BEGIN_SRC javaScripts
+# ie浏览器下
+   var iCharCode = oEvent.keyCode;
+# dom下
+  var iCharCode = oEvent.charCode;
+#+END_SRC
+*** 阻止事件默认行为
+ - ie将returnValue值设置为false
+ - Mozilla调用preventDefault()
+ - 例子
+#+BEGIN_SRC javaScript
+  # ie
+  oEvent.returnValue=false;
+   # mozilla
+ oEvent.preventDefault();
+#+END_SRC
+*** 停止事件复制(冒泡)
+- ie将cancelBubble值设置为true
+- dom中调用stopPropagation()
+- 例子
+#+BEGIN_SRC javaScript
+  function handelClick(oEvent){
+  alert("input");
+ if(isIE){
+    oEvent.cancelBubble = true;
+  }else{
+   oEvent.stopPropagation();
+  }
+ }
+#+END_SRC
+
+* 事件的类型
+** 鼠标事件
+*** 列表
+| 动作名称  | 意义                     |
+|-----------+--------------------------|
+| click     | 左键点击                 |
+| dblclick  | 鼠标双击                 |
+| mousedown | 点击任意一个鼠标按钮     |
+| mouseover | 鼠标移出某个元素,到另一个元素上时发生|
+| mouseup   | 鼠标松开任意按钮         |
+| mousemove | 鼠标在某个元素上持续发生 |
+| mouseout  | 鼠标移出某个元素边缘 |
+*** 属性
+ - 坐标属性
+  + clientX/clientY
+ - type属性
+ - target/srcElement
+ - shiftKey ctrlKey altKey metaKey
+ - button属性
+*** 顺序
+ - mousedown----> mouseup -----> click -----> mousedown -----> mouseup -----> click -----> dblclick
+** 键盘事件
+*** 类别
+| 动作名称 | 意义         |
+|----------+--------------|
+| keydown  | 按下键盘按键 |
+| keypress | 按下按键     |
+| keyup    | 放开按键         |
+*** 属性
+ - keyCode
+ - charCode
+ - target/srcElement
+ - shiftKey ctrlKey altKey metaKey
+*** 顺序
+ - 字符按键
+  + keydown -----> keypress -----> keyup
+ - 非字符按键
+  + keydown ----->keyup  
+** HTML事件
+*** 类别
+| 事件名称 | 事件意义                           |
+|----------+------------------------------------|
+| load     | 页面载入后执行                     |
+| unload   | 页面完全卸载后执行                 |
+| abort    | 页面停止下载过程时                 |
+| error    | js脚本出错时                       |
+| select   | 文本框的字符被触发                 |
+| change   | 文本框失去或获取叫他内容改变时触发 |
+| submit   | 按钮提交form                       |
+| reset    | 重置按钮                           |
+| resize   | 窗口或框架更改大小                 |
+| focus    | 获取焦点                           |
+| blur     | 元素或窗口失去焦点                          |
+
+** 突变事件

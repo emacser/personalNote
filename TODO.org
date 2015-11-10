@@ -1,0 +1,6 @@
+* 近期要学习的内容
+** Java5，新的线程模型和并发库等；
+** Java6：支持脚本引擎的新框架、动态编译API、JDBC4.0、安全相关的增强等.
+** Java7：菱形语法、自动关闭资源、NIO2、文件系统支持、AIO、JDBC 4.1,新增API等.
+** Java8：Lambda表达式、函数式编程、AIO、Stream API、并发增强、Nashorn等.
+** Redis、MongoDB等.

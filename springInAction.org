@@ -1,0 +1,65 @@
+* spring核心
+**  spring的特点
+*** 轻量级
+*** 依赖注入
+*** 面向切面
+*** 容器
+*** 框架  
+** spring的七大模块
+ AOP DAO/ORM JMX JCA JMS context/web MVC/portlermvc/remoting
+** 基本的bean装配
+*** bean工厂及其实现类
+ - ApplicationContext
+ - ClassPathXmlApplicationContext
+ - XmlWebApplicationContext
+ - FileSystemXmlApplicationContext
+*** bean的生命周期
+ - Bean在springBean工厂中的生命周期
+ - Bean在spring应用上下文中的生命周期
+*** bean的创建
+ - 简单定义
+ - 构造函数注入
+***  bean的注入
+ - 简单属性
+ - 其它bean
+ - 集合的装载
+ - 空值
+***  bean的装配
+ - byName
+ - byType
+ - contructor
+ - autodect
+***  bean生命周期的控制
+**** bean范围化
+ - singleton
+ - Protype
+ - request
+ - session
+ - global-session
+**** 初始化和销毁
+  - init-method、default-init-method
+  - destory-mothod、default-destory-method
+  - InitializingBean DisposableBean
+** 高级bean装配
+*** 父bean和子bean实现bean配置重用
+  abstract="true"  设置不实例化该bean
+  parent="上面设置为抽象的beanid" 可继承父类的属性
+*** 方法的注入
+ - 继承MethodReplacer接口
+ - replace-method 标签 name="要替换的方法名称" replacer="替换后的方法名称"
+ - 非springbean的注入
+** 通知bean
+* 企业spring
+** 数据库的使用
+** 事务管理
+** spring的安全
+** 基于pojo的远程服务
+** 契约优先的web服务
+** ejb
+** 消息
+** 企业服务
+* 客户端
+** 处理web请求
+** 渲染web视图
+** web flow
+** 与其它框架的集成

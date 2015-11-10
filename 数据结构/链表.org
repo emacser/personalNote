@@ -1,0 +1,682 @@
+* 序言
+** 数组的缺点
+ - 插入/搜索/删除低效
+ - 大小不可变
+** 链表
+ - 解决数组的缺点
+* 链接点
+** 特点
+ - 数据项包含在Link中
+ - 每个链接点都是某个Link的对象
+** 例子
+ #+BEGIN_SRC java
+  class Link
+{
+   public Object obj ;
+   public Link next;
+}
+#+END_SRC
+* 单链表
+** 特点
+ - 表头插入数据
+ - 表头删除数据
+ 0 遍历链表显示内容
+** 例子
+#+BEGIN_SRC java
+ class Link
+   {
+   public int iData;              // data item
+   public double dData;           // data item
+   public Link next;              // next link in list
+// -------------------------------------------------------------
+   public Link(int id, double dd) // constructor
+      {
+      iData = id;                 // initialize data
+      dData = dd;                 // ('next' is automatically
+      }                           //  set to null)
+// -------------------------------------------------------------
+   public void displayLink()      // display ourself
+      {
+      System.out.print("{" + iData + ", " + dData + "} ");
+      }
+   }  // end class Link
+////////////////////////////////////////////////////////////////
+class LinkList
+   {
+   private Link first;            // ref to first link on list
+
+// -------------------------------------------------------------
+   public LinkList()              // constructor
+      {
+      first = null;               // no links on list yet
+      }
+// -------------------------------------------------------------
+   public boolean isEmpty()       // true if list is empty
+      {
+      return (first==null);
+      }
+// -------------------------------------------------------------
+                                  // insert at start of list
+   public void insertFirst(int id, double dd)
+      {                           // make new link
+      Link newLink = new Link(id, dd);
+      newLink.next = first;       // newLink --> old first
+      first = newLink;            // first --> newLink
+      }
+// -------------------------------------------------------------
+   public Link deleteFirst()      // delete first item
+      {                           // (assumes list not empty)
+      Link temp = first;          // save reference to link
+      first = first.next;         // delete it: first-->old next
+      return temp;                // return deleted link
+      }
+// -------------------------------------------------------------
+   public void displayList()
+      {
+      System.out.print("List (first-->last): ");
+      Link current = first;       // start at beginning of list
+      while(current != null)      // until end of list,
+         {
+         current.displayLink();   // print data
+         current = current.next;  // move to next link
+         }
+      System.out.println("");
+      }
+// -------------------------------------------------------------
+   }  // end class LinkList
+#+END_SRC
+* 查找和删除指定链接点
+** find
+** delete
+** 例子
+#+BEGIN_SRC java
+ public Link find(int key)      // find link with given key
+      {                           // (assumes non-empty list)
+      Link current = first;              // start at 'first'
+      while(current.iData != key)        // while no match,
+         {
+         if(current.next == null)        // if end of list,
+            return null;                 // didn't find it
+         else                            // not end of list,
+            current = current.next;      // go to next link
+         }
+      return current;                    // found it
+      }
+// -------------------------------------------------------------
+   public Link delete(int key)    // delete link with given key
+      {                           // (assumes non-empty list)
+      Link current = first;              // search for link
+      Link previous = first;
+      while(current.iData != key)
+         {
+         if(current.next == null)
+            return null;                 // didn't find it
+         else
+            {
+            previous = current;          // go to next link
+            current = current.next;
+            }
+         }                               // found it
+      if(current == first)               // if first link,
+         first = first.next;             //    change first
+      else                               // otherwise,
+         previous.next = current.next;   //    bypass it
+      return current;
+      }
+#+END_SRC
+* 双端链接点
+** 特点
+ - 可在表尾直接插入一个链接点
+** 例子
+#+BEGIN_SRC java
+ class Link
+   {
+   public long dData;                 // data item
+   public Link next;                  // next link in list
+// -------------------------------------------------------------
+   public Link(long d)                // constructor
+      { dData = d; }
+// -------------------------------------------------------------
+   public void displayLink()          // display this link
+      { System.out.print(dData + " "); }
+// -------------------------------------------------------------
+   }  // end class Link
+////////////////////////////////////////////////////////////////
+class FirstLastList
+   {
+   private Link first;               // ref to first link
+   private Link last;                // ref to last link
+// -------------------------------------------------------------
+   public FirstLastList()            // constructor
+      {
+      first = null;                  // no links on list yet
+      last = null;
+      }
+// -------------------------------------------------------------
+   public boolean isEmpty()          // true if no links
+      { return first==null; }
+// -------------------------------------------------------------
+   public void insertFirst(long dd)  // insert at front of list
+      {
+      Link newLink = new Link(dd);   // make new link
+
+      if( isEmpty() )                // if empty list,
+         last = newLink;             // newLink <-- last
+      newLink.next = first;          // newLink --> old first
+      first = newLink;               // first --> newLink
+      }
+// -------------------------------------------------------------
+   public void insertLast(long dd)   // insert at end of list
+      {
+      Link newLink = new Link(dd);   // make new link
+      if( isEmpty() )                // if empty list,
+         first = newLink;            // first --> newLink
+      else
+         last.next = newLink;        // old last --> newLink
+      last = newLink;                // newLink <-- last
+      }
+// -------------------------------------------------------------
+   public long deleteFirst()         // delete first link
+      {                              // (assumes non-empty list)
+      long temp = first.dData;
+      if(first.next == null)         // if only one item
+         last = null;                // null <-- last
+      first = first.next;            // first --> old next
+      return temp;
+      }
+// -------------------------------------------------------------
+   public void displayList()
+      {
+      System.out.print("List (first-->last): ");
+      Link current = first;          // start at beginning
+      while(current != null)         // until end of list,
+         {
+         current.displayLink();      // print data
+         current = current.next;     // move to next link
+         }
+      System.out.println("");
+      }
+// -------------------------------------------------------------
+   }  // end class FirstLastList
+#+END_SRC
+* 链表的效率
+ - 表头插入和删除速度块
+ - 查找和删除指定链接点
+ - 无容量限制
+* 抽象数据类型
+** 用链实现的栈
+*** 例子
+#+BEGIN_SRC java
+  class Link
+   {
+   public long dData;             // data item
+   public Link next;              // next link in list
+// -------------------------------------------------------------
+   public Link(long dd)           // constructor
+      { dData = dd; }
+// -------------------------------------------------------------
+   public void displayLink()      // display ourself
+      { System.out.print(dData + " "); }
+   }  // end class Link
+////////////////////////////////////////////////////////////////
+class LinkList
+   {
+   private Link first;            // ref to first item on list
+// -------------------------------------------------------------
+   public LinkList()              // constructor
+      { first = null; }           // no items on list yet
+// -------------------------------------------------------------
+   public boolean isEmpty()       // true if list is empty
+      { return (first==null); }
+// -------------------------------------------------------------
+   public void insertFirst(long dd) // insert at start of list
+      {                           // make new link
+      Link newLink = new Link(dd);
+      newLink.next = first;       // newLink --> old first
+      first = newLink;            // first --> newLink
+      }
+// -------------------------------------------------------------
+   public long deleteFirst()      // delete first item
+      {                           // (assumes list not empty)
+      Link temp = first;          // save reference to link
+      first = first.next;         // delete it: first-->old next
+      return temp.dData;          // return deleted link
+      }
+// -------------------------------------------------------------
+   public void displayList()
+      {
+      Link current = first;       // start at beginning of list
+      while(current != null)      // until end of list,
+         {
+         current.displayLink();   // print data
+         current = current.next;  // move to next link
+         }
+      System.out.println("");
+      }
+// -------------------------------------------------------------
+   }  // end class LinkList
+////////////////////////////////////////////////////////////////
+class LinkStack
+   {
+   private LinkList theList;
+//--------------------------------------------------------------
+   public LinkStack()             // constructor
+      {
+      theList = new LinkList();
+      }
+//--------------------------------------------------------------
+   public void push(long j)     // put item on top of stack
+      {
+      theList.insertFirst(j);
+      }
+//--------------------------------------------------------------
+   public long pop()            // take item from top of stack
+      {
+      return theList.deleteFirst();
+      }
+//--------------------------------------------------------------
+   public boolean isEmpty()       // true if stack is empty
+      {
+      return ( theList.isEmpty() );
+      }
+//--------------------------------------------------------------
+   public void displayStack()
+      {
+      System.out.print("Stack (top-->bottom): ");
+      theList.displayList();
+      }
+//--------------------------------------------------------------
+   }  // end class LinkStack
+#+END_SRC
+** 用链表实现的队列
+*** 例子
+#+BEGIN_SRC java
+  class LinkQueue
+   {
+   private FirstLastList theList;
+//--------------------------------------------------------------
+   public LinkQueue()                // constructor
+      { theList = new FirstLastList(); }  // make a 2-ended list
+//--------------------------------------------------------------
+   public boolean isEmpty()          // true if queue is empty
+      { return theList.isEmpty(); }
+//--------------------------------------------------------------
+   public void insert(long j)        // insert, rear of queue
+      { theList.insertLast(j); }
+//--------------------------------------------------------------
+   public long remove()              // remove, front of queue
+      {  return theList.deleteFirst();  }
+//--------------------------------------------------------------
+   public void displayQueue()
+      {
+      System.out.print("Queue (front-->rear): ");
+      theList.displayList();
+      }
+//--------------------------------------------------------------
+   }  // end class LinkQueue
+#+END_SRC
+* 有序链表
+** 特点
+ - 数据按照关键值有序排列
+** 插入
+ - 例子
+#+BEGIN_SRC java
+# 插入与无序链表不同
+   public void insert(long key)        // insert, in order
+      {
+      Link newLink = new Link(key);    // make new link
+      Link previous = null;            // start at first
+      Link current = first;
+                                       // until end of list,
+# 如果插入的值比当前链接的值要大,则比较下一个位置的值
+      while(current != null && key > current.dData)
+         {                             // or key > current,
+         previous = current;
+         current = current.next;       // go to next item
+         }
+# 如果当前链接点为空,则将新链接点添加到链表中
+      if(previous==null)               // at beginning of list
+         first = newLink;              // first --> newLink
+      else                             // not at beginning
+# 如果当前链接点非空,则将前一位置指向新链接点
+         previous.next = newLink;      // old prev --> newLink
+# 新链接点指向当前位置的链接点
+      newLink.next = current;          // newLink --> old currnt
+      }  // end insert()
+#+END_SRC
+** 效率
+ - 插入和删除操作需要O(N)次比较
+** 表插入排序
+ - 将一个无序数组插入一个有序链表中,再删除,将每个元素依次放入数组中
+* 双向链表
+** 特点
+ - 解决反向遍历的问题
+** 例子
+#+BEGIN_SRC java
+  class DoublyLinkedList
+   {
+   private Link first;               // ref to first item
+   private Link last;                // ref to last item
+// -------------------------------------------------------------
+   public DoublyLinkedList()         // constructor
+      {
+      first = null;                  // no items on list yet
+      last = null;
+      }
+// -------------------------------------------------------------
+   public boolean isEmpty()          // true if no links
+      { return first==null; }
+// -------------------------------------------------------------
+   public void insertFirst(long dd)  // insert at front of list
+      {
+      Link newLink = new Link(dd);   // make new link
+
+      if( isEmpty() )                // if empty list,
+         last = newLink;             // newLink <-- last
+      else
+         first.previous = newLink;   // newLink <-- old first
+      newLink.next = first;          // newLink --> old first
+      first = newLink;               // first --> newLink
+      }
+// -------------------------------------------------------------
+   public void insertLast(long dd)   // insert at end of list
+      {
+      Link newLink = new Link(dd);   // make new link
+      if( isEmpty() )                // if empty list,
+         first = newLink;            // first --> newLink
+      else
+         {
+         last.next = newLink;        // old last --> newLink
+         newLink.previous = last;    // old last <-- newLink
+         }
+      last = newLink;                // newLink <-- last
+      }
+// -------------------------------------------------------------
+   public Link deleteFirst()         // delete first link
+      {                              // (assumes non-empty list)
+      Link temp = first;
+      if(first.next == null)         // if only one item
+         last = null;                // null <-- last
+      else
+         first.next.previous = null; // null <-- old next
+      first = first.next;            // first --> old next
+      return temp;
+      }
+// -------------------------------------------------------------
+   public Link deleteLast()          // delete last link
+      {                              // (assumes non-empty list)
+      Link temp = last;
+      if(first.next == null)         // if only one item
+         first = null;               // first --> null
+      else
+         last.previous.next = null;  // old previous --> null
+      last = last.previous;          // old previous <-- last
+      return temp;
+      }
+// -------------------------------------------------------------
+                                     // insert dd just after key
+   public boolean insertAfter(long key, long dd)
+      {                              // (assumes non-empty list)
+      Link current = first;          // start at beginning
+      while(current.dData != key)    // until match is found,
+         {
+         current = current.next;     // move to next link
+         if(current == null)
+            return false;            // didn't find it
+         }
+      Link newLink = new Link(dd);   // make new link
+
+      if(current==last)              // if last link,
+         {
+         newLink.next = null;        // newLink --> null
+         last = newLink;             // newLink <-- last
+         }
+      else                           // not last link,
+         {
+         newLink.next = current.next; // newLink --> old next
+                                      // newLink <-- old next
+         current.next.previous = newLink;
+         }
+      newLink.previous = current;    // old current <-- newLink
+      current.next = newLink;        // old current --> newLink
+      return true;                   // found it, did insertion
+      }
+// -------------------------------------------------------------
+   public Link deleteKey(long key)   // delete item w/ given key
+      {                              // (assumes non-empty list)
+      Link current = first;          // start at beginning
+      while(current.dData != key)    // until match is found,
+         {
+         current = current.next;     // move to next link
+         if(current == null)
+            return null;             // didn't find it
+         }
+      if(current==first)             // found it; first item?
+         first = current.next;       // first --> old next
+      else                           // not first
+                                     // old previous --> old next
+         current.previous.next = current.next;
+
+      if(current==last)              // last item?
+         last = current.previous;    // old previous <-- last
+      else                           // not last
+                                     // old previous <-- old next
+         current.next.previous = current.previous;
+      return current;                // return value
+      }
+// -------------------------------------------------------------
+   public void displayForward()
+      {
+      System.out.print("List (first-->last): ");
+      Link current = first;          // start at beginning
+      while(current != null)         // until end of list,
+         {
+         current.displayLink();      // display data
+         current = current.next;     // move to next link
+         }
+      System.out.println("");
+      }
+// -------------------------------------------------------------
+   public void displayBackward()
+      {
+      System.out.print("List (last-->first): ");
+      Link current = last;           // start at end
+      while(current != null)         // until start of list,
+         {
+         current.displayLink();      // display data
+         current = current.previous; // move to previous link
+         }
+      System.out.println("");
+      }
+// -------------------------------------------------------------
+   }
+#+END_SRC
+* 迭代器
+** 作用
+ - 遍历链表
+** 例子
+#+BEGIN_SRC java
+ class ListIterator
+   {
+   private Link current;          // current link
+   private Link previous;         // previous link
+   private LinkList ourList;      // our linked list
+//--------------------------------------------------------------
+   public ListIterator(LinkList list) // constructor
+      {
+      ourList = list;
+      reset();
+      }
+//--------------------------------------------------------------
+   public void reset()            // start at 'first'
+      {
+      current = ourList.getFirst();
+      previous = null;
+      }
+//--------------------------------------------------------------
+   public boolean atEnd()         // true if last link
+      { return (current.next==null); }
+//--------------------------------------------------------------
+   public void nextLink()         // go to next link
+      {
+      previous = current;
+      current = current.next;
+      }
+//--------------------------------------------------------------
+   public Link getCurrent()       // get current link
+      { return current; }
+//--------------------------------------------------------------
+   public void insertAfter(long dd)     // insert after
+      {                                 // current link
+      Link newLink = new Link(dd);
+
+      if( ourList.isEmpty() )     // empty list
+         {
+         ourList.setFirst(newLink);
+         current = newLink;
+         }
+      else                        // not empty
+         {
+         newLink.next = current.next;
+         current.next = newLink;
+         nextLink();              // point to new link
+         }
+      }
+//--------------------------------------------------------------
+   public void insertBefore(long dd)    // insert before
+      {                                 // current link
+      Link newLink = new Link(dd);
+
+      if(previous == null)        // beginning of list
+         {                        // (or empty list)
+         newLink.next = ourList.getFirst();
+         ourList.setFirst(newLink);
+         reset();
+         }
+      else                        // not beginning
+         {
+         newLink.next = previous.next;
+         previous.next = newLink;
+         current = newLink;
+         }
+      }
+//--------------------------------------------------------------
+   public long deleteCurrent()    // delete item at current
+      {
+      long value = current.dData;
+      if(previous == null)        // beginning of list
+         {
+         ourList.setFirst(current.next);
+         reset();
+         }
+      else                        // not beginning
+         {
+         previous.next = current.next;
+         if( atEnd() )
+            reset();
+         else
+            current = current.next;
+         }
+      return value;
+      }
+//--------------------------------------------------------------
+   }
+#+END_SRC
+- 迭代器的使用
+  + 例子
+#+BEGIN_SRC java
+ class InterIterApp
+   {
+   public static void main(String[] args) throws IOException
+      {
+      LinkList theList = new LinkList();           // new list
+      ListIterator iter1 = theList.getIterator();  // new iter
+      long value;
+
+      iter1.insertAfter(20);             // insert items
+      iter1.insertAfter(40);
+      iter1.insertAfter(80);
+      iter1.insertBefore(60);
+
+      while(true)
+         {
+         System.out.print("Enter first letter of show, reset, ");
+         System.out.print("next, get, before, after, delete: ");
+         System.out.flush();
+         int choice = getChar();         // get user's option
+         switch(choice)
+            {
+            case 's':                    // show list
+               if( !theList.isEmpty() )
+                  theList.displayList();
+               else
+                  System.out.println("List is empty");
+               break;
+            case 'r':                    // reset (to first)
+               iter1.reset();
+               break;
+            case 'n':                    // advance to next item
+               if( !theList.isEmpty() && !iter1.atEnd() )
+                  iter1.nextLink();
+               else
+                  System.out.println("Can't go to next link");
+               break;
+            case 'g':                    // get current item
+               if( !theList.isEmpty() )
+                  {
+                  value = iter1.getCurrent().dData;
+                  System.out.println("Returned " + value);
+                  }
+               else
+                  System.out.println("List is empty");
+               break;
+            case 'b':                    // insert before current
+               System.out.print("Enter value to insert: ");
+               System.out.flush();
+               value = getInt();
+               iter1.insertBefore(value);
+               break;
+            case 'a':                    // insert after current
+               System.out.print("Enter value to insert: ");
+               System.out.flush();
+               value = getInt();
+               iter1.insertAfter(value);
+               break;
+            case 'd':                    // delete current item
+               if( !theList.isEmpty() )
+                  {
+                  value = iter1.deleteCurrent();
+                  System.out.println("Deleted " + value);
+                  }
+               else
+                  System.out.println("Can't delete");
+               break;
+            default:
+               System.out.println("Invalid entry");
+            }  // end switch
+         }  // end while
+      }  // end main()
+//--------------------------------------------------------------
+   public static String getString() throws IOException
+      {
+      InputStreamReader isr = new InputStreamReader(System.in);
+      BufferedReader br = new BufferedReader(isr);
+      String s = br.readLine();
+      return s;
+      }
+//-------------------------------------------------------------
+   public static char getChar() throws IOException
+      {
+      String s = getString();
+      return s.charAt(0);
+      }
+
+//-------------------------------------------------------------
+   public static int getInt() throws IOException
+      {
+      String s = getString();
+      return Integer.parseInt(s);
+      }
+//-------------------------------------------------------------
+   } 
+#+END_SRC

@@ -1,0 +1,42 @@
+* Convention插件的使用
+** 特点: 不使用struts.xml和annotation配置
+** 使用
+ - struts-Convention-plugin-2.1.6.jar添加到lib目录下
+ - 自动搜索action actions struts struts2包下所有的java类
+ - 将下列2类java类当作Action处理
+  + 实现com.opensymphoney.xwork2.Action类
+  + 以Action结尾的类
+** 3个常量的设置
+ - struts.convention.exclude.packages
+  + 指定不扫描的类
+ - struts.convention.package.locators
+  + 指定包作为搜索的根包
+ - struts.convention.action.packages
+  + 作为根包搜索action
+
+* struts的工作原理
+ - 特点
+  * 架构组件
+    拦截器,OGNL,valueStack
+** 拦截器
+*** 特点:
+ - 每一个动作都有一组拦截器与之关联
+ - 拦截器在动作执行前后都被调用
+ - 在结果执行完毕之后才被触发
+*** 任务
+ - 日志
+ - 数据验证
+ - 类型转换
+ - 文件上传
+** valueStack
+** 特点
+ - 保留与请求相关的所有数据的一个存储区域
+ - valueStack存储在一个线程本地对象ThreadLocal中--AcontionContext
+* OGNL
+** 特点
+ - 引用和操作值栈   
+ - 和valueStack一样独立与框架
+* ActionContext
+** 特点
+ - 所包含的数据构成了动作执行的环境
+ - 可以在框架处理请求的任意位置被访问

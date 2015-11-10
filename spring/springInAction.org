@@ -1,0 +1,30 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css" />
+* spring核心
+ - spring的特点
+ - spring的七大模块
+** 基本的bean装配
+ - bean工厂及其实现类
+ - bean的生命周期
+ - bean的创建
+ - bean的注入
+ - bean的装配
+ - bean生命周期的控制
+** 高级bean装配
+ - 父bean和子bean实现bean配置重用
+ - 方法的注入
+ - 非springbean的注入
+** 通知bean
+* 企业spring
+** 数据库的使用
+** 事务管理
+** spring的安全
+** 基于pojo的远程服务
+** 契约优先的web服务
+** ejb
+** 消息
+** 企业服务
+* 客户端
+** 处理web请求
+** 渲染web视图
+** web flow
+** 与其它框架的集成

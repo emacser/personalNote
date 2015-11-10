@@ -1,0 +1,12 @@
+* web Application概念
+** 目录结构
+ -WEB-INF
+   - web.xml
+   - lib
+   - classes
+ - META-INF
+** 虚拟目录的配置
+ #+BEGIN_SRC xml
+  <Context path="虚拟目录" docBase="目录位置" debug='0' reloadable="true"/>
+ #+END_SRC
+ 

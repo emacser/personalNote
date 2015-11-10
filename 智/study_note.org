@@ -1,0 +1,108 @@
+*  需求分析
+** 角色分析
+ 顾客 内部工作人员 供货商
+** 功能分析
+ - 为每种角色准备哪些功能
+ - 顾客的功能
+*** 产品展示
+**** 针对页面的产品显示
+***** 分类显示
+***** 分页显示
+***** 按品牌显示
+***** 条件检索
+***** 推荐商品信息
+***** 浏览历史记录
+***** 网址导航
+***** 商品搜索(类别)
+**** 单个商品的说明
+***** 商品评论
+*** 购买
+**** 购物车
+**** 订单信息
+**** 积分功能
+*** 客户信息
+**** 注册
+**** 登录
+**** 密码找回
+**** 信息更新
+** 前台订单与付款模型
+*** 订单
+**** 列表
+****  单个详细
+***** 配送信息维护
+* 实体类添加jpa映射
+ - 枚举类型
+   + @Enumerated(EnumType.STRING) 字符形式保存
+ - 表之间的关联
+   + 根据关系设置注解 ManyToOne
+   + 根据实际需求设置参数
+     - cascade=CascadeType.REFRESH 级联刷新
+   + 指定外键
+     - JoinColumn(name="外键名称")
+   + 是否必选
+     - optional=false
+   + 双向关联的设置
+     - OneToMany(mapped="被维护端",cascade=CascadeType.REMOVE)
+ -  常用注解
+	多:	@ManyToOne
+	一:	
+		@OneToMany
+		@OneToOne
+	外键:	@JoinColumn(name="外键的名称")
+			一般添加在多的一端
+	多或一的参数:	
+		级联 Cascade=CascadeType.REFRESH
+		是否非空 nullable = false
+		是否必选 optional = false
+		mapedBy("映射对象名称头字母小写") 当前对象已被被注解对象映射
+			放在维护端的被维护对象上
+ - 实体类:
+	多:
+		在一的一方定义Set<多的一方类名称>作为其属性
+	一:
+		在多中定义一一方对象作为其属性
+* Service逻辑层实现
+** 接口
+ - 在接口实现类ServiceBean中写逻辑
+ - 在接口中定义方法
+** 注解
+** 继承
+ - 继承自DaoSupport好处
+  + DAOSupport，封装了 DAO 的基本操作 
+  + DAOSupport 注入了 EntityManager，默认使用 default unit name
+  + 如果需要使用其它的 unit，可以另外注入，或者附在 getEntityManager 方法 
+  + DAO 应该都从 DAOSupport 继承，并且实现为 Stateless Local SessionBean 
+  + DAO 可以脱离容器运行 
+  + DAOSupport已经发布成了 Statless EJB
+  + 如果简单的DAO操作，可以直接使用DAOSupport，而不用提供 DAO 子类
+
+* 环境的搭建
+** 新建项目
+*** Dynamic web project创建
+  - web-module设置
+   + 设置为根目录 --content Root的值设置为空
+** jpa环境设置
+*** 添加jar包
+ - hiberate的包
+ - ejb的包
+ - 方法
+  + 将jar包直接粘贴到lib目录中
+  + 
+
+* 测试
+** 环境的搭建
+*** 添加静态属性
+ - ApplicationContext
+ - Service
+*** 在setUpBeforeClass方法中设置已经定义的属性值
+ - 从配置文件中读取bean并赋值给属性的Service
+ - 例子
+#+BEGIN_SRC java
+ ctx = new ClassPathXmlApplicationContext("bean.xml");
+ service = ctx.getBean("service对应的实现类serviceBean");
+#+END_SRC
+** 使用配置好的ServiceBean
+* mvc
+ - @Controller("/contorller/product/manage")
+  + 设置该action的命名空间
+  + 可通过该参数来进行访问
